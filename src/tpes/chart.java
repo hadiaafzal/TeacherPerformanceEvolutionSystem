@@ -3,14 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package tpes;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import java.awt.BorderLayout;
-import java.awt.Color;
 
 /**
  *
@@ -23,41 +15,15 @@ public class chart extends javax.swing.JFrame {
     /**
      * Creates new form chart
      */
-    public chart() {
+   /* public chart() {
         initComponents();
-        // 1. Create Mock Data (Hardcoded values for testing)
-DefaultPieDataset dataset = new DefaultPieDataset();
-dataset.setValue("Excellent (9-10)", 15); // 15 students gave Excellent
-dataset.setValue("Good (7-8)", 25);      // 25 students gave Good
-dataset.setValue("Average (5-6)", 10);   // 10 students gave Average
-dataset.setValue("Poor (Below 5)", 5);   // 5 students gave Poor
 
-// 2. Create the Chart
-JFreeChart chart = ChartFactory.createPieChart(
-    "Teacher Performance Summary", 
-    dataset, 
-    true,   // Show Legend
-    true,   // Show Tooltips
-    false   // No URLs
-);
+    }*/
 
-// 3. Customizing Colors (Make it look professional)
-PiePlot plot = (PiePlot) chart.getPlot();
-plot.setSectionPaint("Excellent (9-10)", new Color(34, 139, 34)); // Dark Green
-plot.setSectionPaint("Good (7-8)", new Color(50, 205, 50));      // Lime Green
-plot.setSectionPaint("Average (5-6)", Color.ORANGE);
-plot.setSectionPaint("Poor (Below 5)", Color.RED);
 
-// 4. Display in your NetBeans JPanel
-ChartPanel chartPanel = new ChartPanel(chart);
-chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
-
-// IMPORTANT: Set your JPanel layout to BorderLayout in NetBeans Design view first!
-your_panel_name.removeAll();
-your_panel_name.add(chartPanel, java.awt.BorderLayout.CENTER);
-your_panel_name.validate();
-your_panel_name.repaint();
-    }
+public chart() {
+    initComponents();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,27 +34,17 @@ your_panel_name.repaint();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        your_panel_name = new javax.swing.JPanel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        your_panel_name.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addComponent(your_panel_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(464, Short.MAX_VALUE))
+            .addGap(0, 1097, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(your_panel_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(316, Short.MAX_VALUE))
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         pack();
@@ -120,6 +76,5 @@ your_panel_name.repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel your_panel_name;
     // End of variables declaration//GEN-END:variables
 }

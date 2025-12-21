@@ -204,15 +204,11 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="o5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="o4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="o4" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="o5" min="-2" max="-2" attributes="0"/>
                       <Component id="o3" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="o1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="o2" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="o2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="o1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="jLabel9" min="-2" pref="42" max="-2" attributes="0"/>
