@@ -6,8 +6,8 @@ package tpes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.*;
 
 /**
  *
@@ -19,24 +19,36 @@ import java.sql.Statement;
 
 public class TPES {
     
-  Connection con;
-Statement st;
-ResultSet rs;
+   Connection con;
+    Statement st;
+    ResultSet rs;
 
 
 
 TPES(){
 
     
-    try{
-Class.forName("com.mysql.cj.jdbc.Driver");
-con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tpes", "root", "");
-st=con.createStatement ();
-System.out.println("Db is connected");
 
-}catch(Exception e) {
-    System.out.println(e);
-}
+     try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            System.out.println("Driver Loaded");
+
+            
+            String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
+                                 "databaseName=STUDENTS;" +
+                                 "user=sa;" + 
+                                 "password=hadiya129;" +
+                                 "encrypt=true;" + 
+                                 "trustServerCertificate=true;";
+
+            con = DriverManager.getConnection(connectionUrl);
+            st = con.createStatement();
+            
+            System.out.println("CONNECTED TO THE DATABASE");
+
+        } catch (Exception e) {
+            System.out.println("Connection Failed: " + e.getMessage());
+        }
 }
 public int studentsApp(String id, String fname, String lname, String email, String pno, String pass, String dept){
     
@@ -56,7 +68,7 @@ public ResultSet studentDetails(String id, String pass){
     String sql="select*from students where st_id='"+id+"' AND st_pass='"+pass+"'";
     try{
     rs=st.executeQuery(sql);
-    }catch(Exception e){
+    }catch(SQLException e){
     System.out.print(e);
     }
     return rs;
@@ -68,7 +80,8 @@ public ResultSet studentDetails(String id, String pass){
     public static void main(String[] args) {
         // TODO code application logic here
         TPES d=new TPES(); // to show the connection
-        System.out.println("hello ");
+Login n=new Login();
+  n.setVisible(true);
     }
     
 }
