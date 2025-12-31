@@ -17,7 +17,6 @@ import javax.swing.JTextField;
  * @author Supreme_Traders
  */
 public class Login extends javax.swing.JFrame {
-
     private void addPanelFocusEffect(JPanel panel, JTextField field) {
 
     Color normalColor = new Color(0, 0, 0);
@@ -51,7 +50,6 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         addPanelFocusEffect(jPanel4, user_id);
-        addPanelFocusEffect(jPanel3,password);
     }
 
     /**
