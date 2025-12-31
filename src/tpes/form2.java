@@ -82,25 +82,25 @@ public class form2 extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel4.setBackground(new java.awt.Color(57, 77, 120));
+        jPanel4.setBackground(new java.awt.Color(52, 152, 219));
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("7. How fair is the teacher in grading and assessment?");
 
         buttonGroup2.add(o16);
-        o16.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        o16.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         o16.setForeground(new java.awt.Color(255, 255, 255));
         o16.setText("2");
 
         buttonGroup2.add(o17);
-        o17.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        o17.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         o17.setForeground(new java.awt.Color(255, 255, 255));
         o17.setText("1");
 
         buttonGroup2.add(o18);
-        o18.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        o18.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         o18.setForeground(new java.awt.Color(255, 255, 255));
         o18.setText("3");
 
