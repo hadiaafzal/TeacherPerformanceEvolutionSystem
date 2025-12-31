@@ -11,7 +11,8 @@ import javax.swing.JTextField;
 /**
  *
  * @author Dell
- */   
+ */
+
 public class sign_up extends javax.swing.JFrame {
     Color defaultBorderColor = Color.GRAY;
 Color focusBorderColor = new Color(0, 120, 215); // Blue focus color
@@ -80,6 +81,7 @@ private void addFocusEffect(JTextField field) {
         jLabel22 = new javax.swing.JLabel();
         st_semester = new javax.swing.JComboBox<>();
         create = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -198,6 +200,13 @@ private void addFocusEffect(JTextField field) {
             }
         });
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Left 2.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -205,8 +214,11 @@ private void addFocusEffect(JTextField field) {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel7))
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,15 +268,17 @@ private void addFocusEffect(JTextField field) {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(st_id, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel15))
                 .addGap(4, 4, 4)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(st_lname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -314,12 +328,8 @@ private void addFocusEffect(JTextField field) {
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         // TODO add your handling code here:
-<<<<<<< HEAD
-       /* TPES db=new TPES();
-=======
         
        TPES db=new TPES();
->>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
 
         if(st_id.getText().equals("")||st_fname.getText().equals("")||st_lname.getText().equals("")||
             st_email.getText().equals("")||st_pno.getText().equals("")||sconpass.getText().equals("")||st_dept.getSelectedIndex()==0){
@@ -337,14 +347,9 @@ private void addFocusEffect(JTextField field) {
         }
         else{
             JOptionPane.showMessageDialog(this,"register Error","register alert",1);
-<<<<<<< HEAD
-        }}
-*/
-=======
         }
 
         }
->>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         
 
     }//GEN-LAST:event_createActionPerformed
@@ -368,6 +373,13 @@ private void addFocusEffect(JTextField field) {
     private void st_cnicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_st_cnicActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_st_cnicActionPerformed
+
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        // TODO add your handling code here:
+        Login l=new Login();
+        l.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel1MousePressed
 
     /**
      * @param args the command line arguments
@@ -395,6 +407,7 @@ private void addFocusEffect(JTextField field) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton create;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
