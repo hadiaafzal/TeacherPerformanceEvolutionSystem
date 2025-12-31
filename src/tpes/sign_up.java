@@ -7,8 +7,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Dell
- */
-
+ */   
 public class sign_up extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(sign_up.class.getName());
@@ -335,10 +334,10 @@ public class sign_up extends javax.swing.JFrame {
     private void st_pnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_st_pnoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_st_pnoActionPerformed
-/*
+
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         // TODO add your handling code here:
-        TPES db=new TPES();
+       /* TPES db=new TPES();
 
         if(st_id.getText().equals("")||st_fname.getText().equals("")||st_lname.getText().equals("")||
             st_email.getText().equals("")||st_pno.getText().equals("")||sconpass.getText().equals("")||st_dept.getSelectedIndex()==0){
@@ -356,12 +355,12 @@ public class sign_up extends javax.swing.JFrame {
         }
         else{
             JOptionPane.showMessageDialog(this,"register Error","register alert",1);
-        }
-
-        }
+        }}
+*/
+        
 
     }//GEN-LAST:event_createActionPerformed
-*/
+
     private void st_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_st_emailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_st_emailActionPerformed
