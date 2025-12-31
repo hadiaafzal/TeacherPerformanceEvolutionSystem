@@ -9,13 +9,40 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.*;
-
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
 /**
  *
  * @author Supreme_Traders
  */
 public class Login extends javax.swing.JFrame {
-    
+
+    private void addPanelFocusEffect(JPanel panel, JTextField field) {
+
+    Color normalColor = new Color(0, 0, 0);
+    Color focusColor  = new Color(0, 120, 215);
+
+    panel.setBorder(BorderFactory.createLineBorder(normalColor, 2));
+
+    field.addFocusListener(new java.awt.event.FocusAdapter() {
+
+        @Override
+        public void focusGained(java.awt.event.FocusEvent e) {
+            panel.setBorder(
+                BorderFactory.createLineBorder(focusColor, 2)
+            );
+        }
+
+        @Override
+        public void focusLost(java.awt.event.FocusEvent e) {
+            panel.setBorder(
+                BorderFactory.createLineBorder(normalColor, 2)
+            );
+        }
+    });
+}
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
     /**
@@ -23,6 +50,8 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        addPanelFocusEffect(jPanel4, user_id);
+        addPanelFocusEffect(jPanel3,password);
     }
 
     /**
@@ -56,7 +85,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(40, 3));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jPanel3.setToolTipText("");
         jPanel3.setPreferredSize(new java.awt.Dimension(228, 40));
 
@@ -86,7 +115,7 @@ public class Login extends javax.swing.JFrame {
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jPanel4.setToolTipText("");
         jPanel4.setPreferredSize(new java.awt.Dimension(211, 40));
 
