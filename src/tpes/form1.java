@@ -77,16 +77,22 @@ public class form1 extends javax.swing.JFrame {
         o30 = new javax.swing.JRadioButton();
         next = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+<<<<<<< HEAD
         jPanel1.setBackground(new java.awt.Color(0, 35, 102));
+=======
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Century", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("TEACHER PERFORMANCE EVALUATION SYSTEM");
+        jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 3, 4, new java.awt.Color(255, 255, 255)));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Home.png"))); // NOI18N
 
@@ -104,10 +110,10 @@ public class form1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,9 +125,9 @@ public class form1 extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel6)
@@ -132,24 +138,40 @@ public class form1 extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+<<<<<<< HEAD
         jLabel3.setFont(new java.awt.Font("Cambria Math", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(50, 50, 50));
+=======
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         jLabel3.setText("STUDENT CENTER");
+        jLabel3.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 0, 3, new java.awt.Color(0, 0, 255)));
 
+<<<<<<< HEAD
         jTextField1.setEditable(false);
         jTextField1.setBackground(new java.awt.Color(0, 35, 102));
+=======
+        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         jTextField1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
         jTextField1.setText("Anas Khatri");
+        jTextField1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 2, 4, 3, new java.awt.Color(0, 153, 255)));
 
+<<<<<<< HEAD
         jTextField2.setEditable(false);
         jTextField2.setBackground(new java.awt.Color(0, 35, 102));
+=======
+        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         jTextField2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
         jTextField2.setText("CSC-25S-004");
+        jTextField2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 2, 4, 3, new java.awt.Color(0, 153, 255)));
 
         jPanel4.setBackground(new java.awt.Color(52, 152, 219));
+<<<<<<< HEAD
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
+=======
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -217,7 +239,10 @@ public class form1 extends javax.swing.JFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(52, 152, 219));
+<<<<<<< HEAD
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
+=======
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -285,7 +310,10 @@ public class form1 extends javax.swing.JFrame {
         );
 
         jPanel5.setBackground(new java.awt.Color(52, 152, 219));
+<<<<<<< HEAD
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
+=======
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         jPanel5.setPreferredSize(new java.awt.Dimension(610, 100));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -332,7 +360,7 @@ public class form1 extends javax.swing.JFrame {
                 .addComponent(o21, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77)
                 .addComponent(o23, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73)
+                .addGap(41, 41, 41)
                 .addComponent(o24, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(o25, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -354,7 +382,10 @@ public class form1 extends javax.swing.JFrame {
         );
 
         jPanel7.setBackground(new java.awt.Color(52, 152, 219));
+<<<<<<< HEAD
         jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
+=======
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
@@ -423,7 +454,10 @@ public class form1 extends javax.swing.JFrame {
         );
 
         jPanel6.setBackground(new java.awt.Color(52, 152, 219));
+<<<<<<< HEAD
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
+=======
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
@@ -490,7 +524,11 @@ public class form1 extends javax.swing.JFrame {
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
+<<<<<<< HEAD
         next.setBackground(new java.awt.Color(39, 60, 117));
+=======
+        next.setBackground(new java.awt.Color(0, 0, 204));
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         next.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         next.setForeground(new java.awt.Color(255, 255, 255));
         next.setText("NEXT");
@@ -498,10 +536,24 @@ public class form1 extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Forward.png"))); // NOI18N
 
+        jPanel8.setBackground(new java.awt.Color(0, 51, 255));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 8, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(205, 205, 205)
                 .addComponent(jLabel3)
@@ -523,10 +575,40 @@ public class form1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
+=======
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(179, 179, 179)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+                                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(jTextField1))
+                        .addGap(30, 30, 30))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(51, Short.MAX_VALUE))))
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+<<<<<<< HEAD
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
@@ -534,6 +616,16 @@ public class form1 extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jLabel3)))
+=======
+                .addGap(7, 7, 7)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)))
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -548,7 +640,11 @@ public class form1 extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+<<<<<<< HEAD
                         .addContainerGap(30, Short.MAX_VALUE))
+=======
+                        .addContainerGap(24, Short.MAX_VALUE))
+>>>>>>> 03c5cb34deac3c86cf417b1ee8d4da952219ecdf
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -618,6 +714,7 @@ public class form1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JButton next;
