@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.*;
 
 /**
  *
@@ -287,7 +289,28 @@ public class Login extends javax.swing.JFrame {
         
         System.out.println("Attempting login for: " + user);
     }
+    
+    
+    TPES db=new TPES();
+        ResultSet rs;
+        String ID=user_id.getText().toUpperCase();
 
+        try{
+            rs=db.studentDetails(user_id.getText(), password.getText());
+            if(rs.next()){
+                //match selection
+
+                Std_home s=new Std_home();
+    s.setVisible(true);
+    dispose();
+                return;
+            }
+             JOptionPane.showMessageDialog(this,"login alert","Error",2);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
     }//GEN-LAST:event_loginActionPerformed
 
     private void user_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_idActionPerformed
@@ -319,7 +342,7 @@ public class Login extends javax.swing.JFrame {
 
     private void sign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sign_upActionPerformed
         // TODO add your handling code here:
-         Std_home h=new Std_home();
+         sign_up h=new sign_up();
         h.setVisible(true);
         dispose();
     }//GEN-LAST:event_sign_upActionPerformed
