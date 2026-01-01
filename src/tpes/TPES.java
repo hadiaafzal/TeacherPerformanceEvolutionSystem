@@ -6,8 +6,8 @@ package tpes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  *
@@ -19,17 +19,16 @@ import java.sql.*;
 
 public class TPES {
     
-   Connection con;
-    Statement st;
-    ResultSet rs;
+  Connection con;
+Statement st;
+ResultSet rs;
 
 
 
 TPES(){
 
     
-
-     try {
+    try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             System.out.println("Driver Loaded");
 
@@ -53,7 +52,7 @@ TPES(){
 public int studentsApp(String id, String fname, String lname, String email, String pno, String pass, String dept){
     
     int status=0;
-    String sql="INSERT INTO `students` (`st_id`, `st_fname`, `st_lname`, `st_email`, `st_pno`, `st_pass`, `st_dept`)VALUES ('"+id+"','"+fname+"','"+lname+"','"+email+"','"+pno+"','"+pass+"','"+dept+"')";
+    String sql="INSERT INTO students (st_id, st_fname, st_lname, st_email, st_pno, st_pas, st_dept)VALUES ('"+id+"','"+fname+"','"+lname+"','"+email+"','"+pno+"','"+pass+"','"+dept+"')";
     try{
     st.executeUpdate(sql);
     status =1;
@@ -65,10 +64,10 @@ public int studentsApp(String id, String fname, String lname, String email, Stri
 }
 public ResultSet studentDetails(String id, String pass){
 
-    String sql="select*from students where st_id='"+id+"' AND st_pass='"+pass+"'";
+    String sql="select * from students where st_id= '"+id+"'  AND st_pass= '"+pass+"'  ";
     try{
     rs=st.executeQuery(sql);
-    }catch(SQLException e){
+    }catch(Exception e){
     System.out.print(e);
     }
     return rs;
@@ -80,8 +79,6 @@ public ResultSet studentDetails(String id, String pass){
     public static void main(String[] args) {
         // TODO code application logic here
         TPES d=new TPES(); // to show the connection
-Login n=new Login();
-  n.setVisible(true);
     }
     
 }
