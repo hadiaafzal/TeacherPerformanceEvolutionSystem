@@ -35,7 +35,7 @@ TPES(){
 
             
             String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
-                                 "databaseName=STUDENTS;" +
+                                 "databaseName=tpes;" +
                                  "user=sa;" + 
                                  "password=hadiya129;" +
                                  "encrypt=true;" + 
