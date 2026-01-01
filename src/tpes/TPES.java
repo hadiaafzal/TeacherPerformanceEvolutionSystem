@@ -49,10 +49,10 @@ TPES(){
             System.out.println("Connection Failed: " + e.getMessage());
         }
 }
-public int studentsApp(String id, String fname, String lname, String email, String pno, String pass, String dept){
+public int studentsApp(String id, String fname, String lname, String email, String pno, String pass, String dept, int sem, String cnic){
     
     int status=0;
-    String sql="INSERT INTO students (st_id, st_fname, st_lname, st_email, st_pno, st_pas, st_dept)VALUES ('"+id+"','"+fname+"','"+lname+"','"+email+"','"+pno+"','"+pass+"','"+dept+"')";
+    String sql="INSERT INTO students (st_id, st_fname, st_lname, st_email, st_pno, st_pass, st_dept, st_semester, st_cnic)VALUES ('"+id+"','"+fname+"','"+lname+"','"+email+"','"+pno+"','"+pass+"','"+dept+"','"+sem+"','"+cnic+"')";
     try{
     st.executeUpdate(sql);
     status =1;

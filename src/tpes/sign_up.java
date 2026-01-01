@@ -332,13 +332,13 @@ private void addFocusEffect(JTextField field) {
        TPES db=new TPES();
 
         if(st_id.getText().equals("")||st_fname.getText().equals("")||st_lname.getText().equals("")||
-            st_email.getText().equals("")||st_pno.getText().equals("")||sconpass.getText().equals("")||st_dept.getSelectedIndex()==0){
+            st_email.getText().equals("")||st_pno.getText().equals("")||password.getText().equals("")||!password.getText().equals(sconpass.getText())||st_dept.getSelectedIndex()==0||st_semester.getSelectedIndex()==0||st_cnic.getText().equals("")){
 
             JOptionPane.showMessageDialog(this,"register Error","register alert",1);
         }
         else{
             if(db.studentsApp(st_id.getText(),st_fname.getText(),st_lname.getText(),
-                st_email.getText(),st_pno.getText(),sconpass.getText(),st_dept.getSelectedItem().toString())==1){
+                st_email.getText(),st_pno.getText(),password.getText(),st_dept.getSelectedItem().toString(), st_semester.getSelectedIndex() , st_cnic.getText() )==1){
             JOptionPane.showMessageDialog(this,"Your Account is created","register success",1);
 
             Login l=new Login();
