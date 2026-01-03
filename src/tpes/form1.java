@@ -4,6 +4,14 @@
  */
 package tpes;
 
+import java.awt.List;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+
 /**
  *
  * @author Dell
@@ -11,12 +19,71 @@ package tpes;
 public class form1 extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(form1.class.getName());
-
-   
+    private String ID;
+    private String FullName;
+    private ArrayList teacherIds;
+    private ArrayList subjectIds;
+    private ArrayList teacherName;
     public form1() {
         initComponents();
+        teacher_name.setText("Haq Nawaz lashari");
     }
+    public form1(String ID, String name,String sub_id, String t_id, String teacher) {
+        initComponents();
+        TPES db=new TPES();
+       ArrayList<String> teacherIds = new ArrayList<>();
+       ArrayList<String> subjectIds = new ArrayList<>();
+       ArrayList<String> teacherName = new ArrayList<>();
+        studentid.setText(ID);
+        teacher_name.setText(teacher);
+        ResultSet rs;
+        this.ID=ID;
+        String dep="";
+        int sem=0;
+        ResultSet rs2;
+        subject.removeAllItems(); // clear previous items
+        subject.addItem("Select Subject");
+try {
+    rs = db.studentName(ID);
+    if (rs.next()) {
+        String fname = rs.getString("st_fname");
+        String lname = rs.getString("st_lname");
+        dep=rs.getString("st_dept");
+        sem=Integer.parseInt(rs.getString("st_semester"));
+        System.out.println(sem);
 
+        fullname.setText(fname + " " + lname);
+    }
+    rs2 = db.teacher(sem, dep, ID);
+    while(rs2.next()){
+        subjectIds.add(rs2.getString("sub_id"));
+        String subName= rs2.getString("sub_name");
+        teacherIds.add(rs2.getString("t_id"));
+        String teacherFName=rs2.getString("t_fname");
+        String teacherLName=rs2.getString("t_lname");
+        String teacherFullName=teacherFName+" "+teacherLName;
+        teacherName.add(teacherFullName);
+        subject.addItem(subName);
+        }
+} catch(Exception e){
+            System.out.println(e);
+        }
+        this.FullName=fullname.getText();
+        this.subjectIds=subjectIds;
+        this.teacherIds=teacherIds;
+        this.teacherName=teacherName;
+    }
+    int Qmarks(JRadioButton qo1, JRadioButton qo2, JRadioButton qo3, JRadioButton qo4, JRadioButton qo5) {
+    int q = 0; // Default or starting value
+    
+    if (qo1.isSelected()) q = 2;
+    if (qo2.isSelected()) q = 4;
+    if (qo3.isSelected()) q = 6;
+    if (qo4.isSelected()) q = 8;
+    if (qo5.isSelected()) q = 10;
+    
+    return q; // Return the updated value to the caller
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,49 +113,50 @@ public class form1 extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        o2 = new javax.swing.JRadioButton();
-        o1 = new javax.swing.JRadioButton();
-        o3 = new javax.swing.JRadioButton();
-        o4 = new javax.swing.JRadioButton();
-        o5 = new javax.swing.JRadioButton();
+        q1o2 = new javax.swing.JRadioButton();
+        q1o1 = new javax.swing.JRadioButton();
+        q1o3 = new javax.swing.JRadioButton();
+        q1o4 = new javax.swing.JRadioButton();
+        q1o5 = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        fullname = new javax.swing.JTextField();
+        studentid = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        o6 = new javax.swing.JRadioButton();
-        o7 = new javax.swing.JRadioButton();
-        o8 = new javax.swing.JRadioButton();
-        o9 = new javax.swing.JRadioButton();
-        o10 = new javax.swing.JRadioButton();
+        q2o2 = new javax.swing.JRadioButton();
+        q2o1 = new javax.swing.JRadioButton();
+        q2o3 = new javax.swing.JRadioButton();
+        q2o4 = new javax.swing.JRadioButton();
+        q2o5 = new javax.swing.JRadioButton();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        o46 = new javax.swing.JRadioButton();
-        o47 = new javax.swing.JRadioButton();
-        o48 = new javax.swing.JRadioButton();
-        o49 = new javax.swing.JRadioButton();
-        o50 = new javax.swing.JRadioButton();
+        q3o2 = new javax.swing.JRadioButton();
+        q3o1 = new javax.swing.JRadioButton();
+        q3o3 = new javax.swing.JRadioButton();
+        q3o4 = new javax.swing.JRadioButton();
+        q3o5 = new javax.swing.JRadioButton();
         jPanel13 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        o51 = new javax.swing.JRadioButton();
-        o52 = new javax.swing.JRadioButton();
-        o53 = new javax.swing.JRadioButton();
-        o54 = new javax.swing.JRadioButton();
-        o55 = new javax.swing.JRadioButton();
+        q4o2 = new javax.swing.JRadioButton();
+        q4o1 = new javax.swing.JRadioButton();
+        q4o3 = new javax.swing.JRadioButton();
+        q4o4 = new javax.swing.JRadioButton();
+        q4o5 = new javax.swing.JRadioButton();
         jPanel14 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        o56 = new javax.swing.JRadioButton();
-        o57 = new javax.swing.JRadioButton();
-        o58 = new javax.swing.JRadioButton();
-        o59 = new javax.swing.JRadioButton();
-        o60 = new javax.swing.JRadioButton();
+        q5o2 = new javax.swing.JRadioButton();
+        q5o1 = new javax.swing.JRadioButton();
+        q5o3 = new javax.swing.JRadioButton();
+        q5o4 = new javax.swing.JRadioButton();
+        q5o5 = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         submit = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        subject = new javax.swing.JComboBox<>();
         confirm = new javax.swing.JButton();
+        teacher_name = new javax.swing.JLabel();
 
         jPanel9.setBackground(new java.awt.Color(57, 77, 120));
         jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
@@ -210,26 +278,31 @@ public class form1 extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("1. How often does the teacher attends the class on time & regurlarly?");
 
-        o2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o2.setForeground(new java.awt.Color(255, 255, 255));
-        o2.setText("2");
-        o2.addActionListener(this::o2ActionPerformed);
+        buttonGroup1.add(q1o2);
+        q1o2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q1o2.setForeground(new java.awt.Color(255, 255, 255));
+        q1o2.setText("2");
+        q1o2.addActionListener(this::q1o2ActionPerformed);
 
-        o1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o1.setForeground(new java.awt.Color(255, 255, 255));
-        o1.setText("1");
+        buttonGroup1.add(q1o1);
+        q1o1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q1o1.setForeground(new java.awt.Color(255, 255, 255));
+        q1o1.setText("1");
 
-        o3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o3.setForeground(new java.awt.Color(255, 255, 255));
-        o3.setText("3");
+        buttonGroup1.add(q1o3);
+        q1o3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q1o3.setForeground(new java.awt.Color(255, 255, 255));
+        q1o3.setText("3");
 
-        o4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o4.setForeground(new java.awt.Color(255, 255, 255));
-        o4.setText("4");
+        buttonGroup1.add(q1o4);
+        q1o4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q1o4.setForeground(new java.awt.Color(255, 255, 255));
+        q1o4.setText("4");
 
-        o5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o5.setForeground(new java.awt.Color(255, 255, 255));
-        o5.setText("5");
+        buttonGroup1.add(q1o5);
+        q1o5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q1o5.setForeground(new java.awt.Color(255, 255, 255));
+        q1o5.setText("5");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -241,15 +314,15 @@ public class form1 extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(o1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(o2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(o3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q1o1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(q1o2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(q1o3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(q1o4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(o4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(o5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q1o5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
         );
         jPanel3Layout.setVerticalGroup(
@@ -258,11 +331,11 @@ public class form1 extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(o1)
-                    .addComponent(o2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o5)))
+                    .addComponent(q1o1)
+                    .addComponent(q1o2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q1o3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q1o4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q1o5)))
         );
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 153));
@@ -275,19 +348,17 @@ public class form1 extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 33, 71));
         jLabel3.setText("STUDENT CENTER");
 
-        jTextField1.setEditable(false);
-        jTextField1.setBackground(new java.awt.Color(57, 77, 120));
-        jTextField1.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("Anas Khatri");
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        fullname.setEditable(false);
+        fullname.setBackground(new java.awt.Color(57, 77, 120));
+        fullname.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
+        fullname.setForeground(new java.awt.Color(255, 255, 255));
+        fullname.setBorder(null);
+        fullname.addActionListener(this::fullnameActionPerformed);
 
-        jTextField2.setBackground(new java.awt.Color(57, 77, 120));
-        jTextField2.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("CSC-25S-004");
-        jTextField2.setBorder(null);
+        studentid.setBackground(new java.awt.Color(57, 77, 120));
+        studentid.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
+        studentid.setForeground(new java.awt.Color(255, 255, 255));
+        studentid.setBorder(null);
 
         jPanel8.setBackground(new java.awt.Color(70, 80, 90));
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
@@ -296,26 +367,31 @@ public class form1 extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("2. How clear are the teacher’s explanations of concepts?");
 
-        o6.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o6.setForeground(new java.awt.Color(255, 255, 255));
-        o6.setText("2");
-        o6.addActionListener(this::o6ActionPerformed);
+        buttonGroup2.add(q2o2);
+        q2o2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q2o2.setForeground(new java.awt.Color(255, 255, 255));
+        q2o2.setText("2");
+        q2o2.addActionListener(this::q2o2ActionPerformed);
 
-        o7.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o7.setForeground(new java.awt.Color(255, 255, 255));
-        o7.setText("1");
+        buttonGroup2.add(q2o1);
+        q2o1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q2o1.setForeground(new java.awt.Color(255, 255, 255));
+        q2o1.setText("1");
 
-        o8.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o8.setForeground(new java.awt.Color(255, 255, 255));
-        o8.setText("3");
+        buttonGroup2.add(q2o3);
+        q2o3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q2o3.setForeground(new java.awt.Color(255, 255, 255));
+        q2o3.setText("3");
 
-        o9.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o9.setForeground(new java.awt.Color(255, 255, 255));
-        o9.setText("4");
+        buttonGroup2.add(q2o4);
+        q2o4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q2o4.setForeground(new java.awt.Color(255, 255, 255));
+        q2o4.setText("4");
 
-        o10.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o10.setForeground(new java.awt.Color(255, 255, 255));
-        o10.setText("5");
+        buttonGroup2.add(q2o5);
+        q2o5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q2o5.setForeground(new java.awt.Color(255, 255, 255));
+        q2o5.setText("5");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -327,15 +403,15 @@ public class form1 extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(o7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q2o1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addComponent(o6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(o8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q2o2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(o9, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(o10, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q2o3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(q2o4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(q2o5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
         );
         jPanel8Layout.setVerticalGroup(
@@ -343,11 +419,11 @@ public class form1 extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(o7)
-                    .addComponent(o6, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o8, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o9, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o10)))
+                    .addComponent(q2o1)
+                    .addComponent(q2o2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q2o3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q2o4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q2o5)))
         );
 
         jPanel12.setBackground(new java.awt.Color(70, 80, 90));
@@ -357,26 +433,31 @@ public class form1 extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("3. Does the teacher make the subject feel interesting or important?");
 
-        o46.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o46.setForeground(new java.awt.Color(255, 255, 255));
-        o46.setText("2");
-        o46.addActionListener(this::o46ActionPerformed);
+        buttonGroup3.add(q3o2);
+        q3o2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q3o2.setForeground(new java.awt.Color(255, 255, 255));
+        q3o2.setText("2");
+        q3o2.addActionListener(this::q3o2ActionPerformed);
 
-        o47.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o47.setForeground(new java.awt.Color(255, 255, 255));
-        o47.setText("1");
+        buttonGroup3.add(q3o1);
+        q3o1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q3o1.setForeground(new java.awt.Color(255, 255, 255));
+        q3o1.setText("1");
 
-        o48.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o48.setForeground(new java.awt.Color(255, 255, 255));
-        o48.setText("3");
+        buttonGroup3.add(q3o3);
+        q3o3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q3o3.setForeground(new java.awt.Color(255, 255, 255));
+        q3o3.setText("3");
 
-        o49.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o49.setForeground(new java.awt.Color(255, 255, 255));
-        o49.setText("4");
+        buttonGroup3.add(q3o4);
+        q3o4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q3o4.setForeground(new java.awt.Color(255, 255, 255));
+        q3o4.setText("4");
 
-        o50.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o50.setForeground(new java.awt.Color(255, 255, 255));
-        o50.setText("5");
+        buttonGroup3.add(q3o5);
+        q3o5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q3o5.setForeground(new java.awt.Color(255, 255, 255));
+        q3o5.setText("5");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -388,15 +469,15 @@ public class form1 extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(o47, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q3o1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
-                .addComponent(o46, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(o48, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q3o2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(q3o3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(o49, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(o50, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q3o4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(q3o5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
         );
         jPanel12Layout.setVerticalGroup(
@@ -404,11 +485,11 @@ public class form1 extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(o47)
-                    .addComponent(o46, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o48, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o49, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o50)))
+                    .addComponent(q3o1)
+                    .addComponent(q3o2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q3o3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q3o4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q3o5)))
         );
 
         jPanel13.setBackground(new java.awt.Color(70, 80, 90));
@@ -418,26 +499,31 @@ public class form1 extends javax.swing.JFrame {
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("4. How well the teacher responds to the questions asked by students?");
 
-        o51.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o51.setForeground(new java.awt.Color(255, 255, 255));
-        o51.setText("2");
-        o51.addActionListener(this::o51ActionPerformed);
+        buttonGroup4.add(q4o2);
+        q4o2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q4o2.setForeground(new java.awt.Color(255, 255, 255));
+        q4o2.setText("2");
+        q4o2.addActionListener(this::q4o2ActionPerformed);
 
-        o52.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o52.setForeground(new java.awt.Color(255, 255, 255));
-        o52.setText("1");
+        buttonGroup4.add(q4o1);
+        q4o1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q4o1.setForeground(new java.awt.Color(255, 255, 255));
+        q4o1.setText("1");
 
-        o53.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o53.setForeground(new java.awt.Color(255, 255, 255));
-        o53.setText("3");
+        buttonGroup4.add(q4o3);
+        q4o3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q4o3.setForeground(new java.awt.Color(255, 255, 255));
+        q4o3.setText("3");
 
-        o54.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o54.setForeground(new java.awt.Color(255, 255, 255));
-        o54.setText("4");
+        buttonGroup4.add(q4o4);
+        q4o4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q4o4.setForeground(new java.awt.Color(255, 255, 255));
+        q4o4.setText("4");
 
-        o55.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o55.setForeground(new java.awt.Color(255, 255, 255));
-        o55.setText("5");
+        buttonGroup4.add(q4o5);
+        q4o5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q4o5.setForeground(new java.awt.Color(255, 255, 255));
+        q4o5.setText("5");
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -449,15 +535,15 @@ public class form1 extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(o52, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q4o1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
-                .addComponent(o51, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(o53, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q4o2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(q4o3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(o54, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(o55, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q4o4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(q4o5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
         );
         jPanel13Layout.setVerticalGroup(
@@ -465,11 +551,11 @@ public class form1 extends javax.swing.JFrame {
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(o52)
-                    .addComponent(o51, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o53, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o54, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o55)))
+                    .addComponent(q4o1)
+                    .addComponent(q4o2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q4o3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q4o4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q4o5)))
         );
 
         jPanel14.setBackground(new java.awt.Color(70, 80, 90));
@@ -480,26 +566,31 @@ public class form1 extends javax.swing.JFrame {
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("5. How available is the teacher for student guidance and support?");
 
-        o56.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o56.setForeground(new java.awt.Color(255, 255, 255));
-        o56.setText("2");
-        o56.addActionListener(this::o56ActionPerformed);
+        buttonGroup5.add(q5o2);
+        q5o2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q5o2.setForeground(new java.awt.Color(255, 255, 255));
+        q5o2.setText("2");
+        q5o2.addActionListener(this::q5o2ActionPerformed);
 
-        o57.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o57.setForeground(new java.awt.Color(255, 255, 255));
-        o57.setText("1");
+        buttonGroup5.add(q5o1);
+        q5o1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q5o1.setForeground(new java.awt.Color(255, 255, 255));
+        q5o1.setText("1");
 
-        o58.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o58.setForeground(new java.awt.Color(255, 255, 255));
-        o58.setText("3");
+        buttonGroup5.add(q5o3);
+        q5o3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q5o3.setForeground(new java.awt.Color(255, 255, 255));
+        q5o3.setText("3");
 
-        o59.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o59.setForeground(new java.awt.Color(255, 255, 255));
-        o59.setText("4");
+        buttonGroup5.add(q5o4);
+        q5o4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q5o4.setForeground(new java.awt.Color(255, 255, 255));
+        q5o4.setText("4");
 
-        o60.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        o60.setForeground(new java.awt.Color(255, 255, 255));
-        o60.setText("5");
+        buttonGroup5.add(q5o5);
+        q5o5.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        q5o5.setForeground(new java.awt.Color(255, 255, 255));
+        q5o5.setText("5");
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -507,15 +598,15 @@ public class form1 extends javax.swing.JFrame {
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(o57, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q5o1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(o56, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(o58, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q5o2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(q5o3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(o59, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(o60, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(q5o4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(q5o5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
@@ -527,11 +618,11 @@ public class form1 extends javax.swing.JFrame {
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(o57)
-                    .addComponent(o56, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o58, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o59, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(o60)))
+                    .addComponent(q5o1)
+                    .addComponent(q5o2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q5o3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q5o4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(q5o5)))
         );
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Left 2.png"))); // NOI18N
@@ -575,8 +666,8 @@ public class form1 extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                            .addComponent(fullname)
+                            .addComponent(studentid, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
                         .addGap(72, 72, 72))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
@@ -591,20 +682,21 @@ public class form1 extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(296, 296, 296)
                         .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(27, 27, 27)))
+                                .addGap(27, 27, 27))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)))
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -616,7 +708,7 @@ public class form1 extends javax.swing.JFrame {
                         .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(191, 191, 191)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 680, 460));
@@ -625,18 +717,21 @@ public class form1 extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Cambria Math", 1, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Select a Teacher");
+        jLabel11.setText("Select a Subject");
 
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select---", "IRFAN KHANDRO", "IMTIAZ HUSSAIN", "AMEEN KHWAJA", "JATIN KUMAR", "SHAHISTA LODHI", "NOMAN  BIN ZAHID", "ADEEL HUSSAIN", "ASIF KHAN", "HAQUE NAWAZ LASHARI" }));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+        subject.setBackground(new java.awt.Color(204, 204, 204));
+        subject.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        subject.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select---" }));
+        subject.addActionListener(this::subjectActionPerformed);
 
         confirm.setBackground(new java.awt.Color(0, 0, 255));
         confirm.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         confirm.setForeground(new java.awt.Color(255, 255, 255));
         confirm.setText("Fill Form");
         confirm.addActionListener(this::confirmActionPerformed);
+
+        teacher_name.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        teacher_name.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -645,26 +740,34 @@ public class form1 extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(confirm))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(confirm)))
+                        .addGap(0, 9, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addComponent(teacher_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(144, 144, 144)
+                .addGap(44, 44, 44)
+                .addComponent(teacher_name, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
                 .addComponent(confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 170, 460));
@@ -677,54 +780,71 @@ public class form1 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_o11ActionPerformed
 
-    private void o2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o2ActionPerformed
+    private void q1o2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q1o2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_o2ActionPerformed
+    }//GEN-LAST:event_q1o2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void fullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_fullnameActionPerformed
 
-    private void o6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o6ActionPerformed
+    private void q2o2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q2o2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_o6ActionPerformed
+    }//GEN-LAST:event_q2o2ActionPerformed
 
-    private void o46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o46ActionPerformed
+    private void q3o2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q3o2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_o46ActionPerformed
+    }//GEN-LAST:event_q3o2ActionPerformed
 
-    private void o51ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o51ActionPerformed
+    private void q4o2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q4o2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_o51ActionPerformed
+    }//GEN-LAST:event_q4o2ActionPerformed
 
-    private void o56ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_o56ActionPerformed
+    private void q5o2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_q5o2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_o56ActionPerformed
+    }//GEN-LAST:event_q5o2ActionPerformed
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
         // TODO add your handling code here:
-        Std_home l=new Std_home();
+        Std_home l=new Std_home(ID);
         l.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel5MousePressed
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
-        form2 l=new form2();
-        l.setVisible(true);
+        int q1=Qmarks(q1o1,q1o2,q1o3,q1o4,q1o5);
+        int q2=Qmarks(q2o1,q2o2,q2o3,q2o4,q2o5);
+        int q3=Qmarks(q3o1,q3o2,q3o3,q3o4,q3o5);
+        int q4=Qmarks(q4o1,q4o2,q4o3,q4o4,q4o5);
+        int q5=Qmarks(q5o1,q5o2,q5o3,q5o4,q5o5);
+        
+        // Change return type to 'int' and parameters to 'JRadioButton'
+        form2 f=new form2();
+        f.setVisible(true);
         dispose();
+
+
     }//GEN-LAST:event_submitActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void subjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subjectActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_subjectActionPerformed
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         // TODO add your handling code here:
-
-        form1 f=new form1();
+        int selectedIndex = subject.getSelectedIndex();
+        if(subject.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(this,"Please select a subject");
+        }
+        else{
+        String selectedTeacherId =teacherIds.get(selectedIndex-1).toString();
+        String selectedSubjectId =subjectIds.get(selectedIndex-1).toString();
+        String selectedTeacherName =teacherName.get(selectedIndex-1).toString();
+        form1 f=new form1(ID,FullName,selectedSubjectId,selectedTeacherId,selectedTeacherName);
         f.setVisible(true);
         dispose();
+        }
     }//GEN-LAST:event_confirmActionPerformed
 
     /**
@@ -759,7 +879,7 @@ public class form1 extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.JButton confirm;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField fullname;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -783,38 +903,39 @@ public class form1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JRadioButton o1;
-    private javax.swing.JRadioButton o10;
     private javax.swing.JRadioButton o11;
     private javax.swing.JRadioButton o12;
     private javax.swing.JRadioButton o13;
     private javax.swing.JRadioButton o14;
     private javax.swing.JRadioButton o15;
-    private javax.swing.JRadioButton o2;
-    private javax.swing.JRadioButton o3;
-    private javax.swing.JRadioButton o4;
-    private javax.swing.JRadioButton o46;
-    private javax.swing.JRadioButton o47;
-    private javax.swing.JRadioButton o48;
-    private javax.swing.JRadioButton o49;
-    private javax.swing.JRadioButton o5;
-    private javax.swing.JRadioButton o50;
-    private javax.swing.JRadioButton o51;
-    private javax.swing.JRadioButton o52;
-    private javax.swing.JRadioButton o53;
-    private javax.swing.JRadioButton o54;
-    private javax.swing.JRadioButton o55;
-    private javax.swing.JRadioButton o56;
-    private javax.swing.JRadioButton o57;
-    private javax.swing.JRadioButton o58;
-    private javax.swing.JRadioButton o59;
-    private javax.swing.JRadioButton o6;
-    private javax.swing.JRadioButton o60;
-    private javax.swing.JRadioButton o7;
-    private javax.swing.JRadioButton o8;
-    private javax.swing.JRadioButton o9;
+    private javax.swing.JRadioButton q1o1;
+    private javax.swing.JRadioButton q1o2;
+    private javax.swing.JRadioButton q1o3;
+    private javax.swing.JRadioButton q1o4;
+    private javax.swing.JRadioButton q1o5;
+    private javax.swing.JRadioButton q2o1;
+    private javax.swing.JRadioButton q2o2;
+    private javax.swing.JRadioButton q2o3;
+    private javax.swing.JRadioButton q2o4;
+    private javax.swing.JRadioButton q2o5;
+    private javax.swing.JRadioButton q3o1;
+    private javax.swing.JRadioButton q3o2;
+    private javax.swing.JRadioButton q3o3;
+    private javax.swing.JRadioButton q3o4;
+    private javax.swing.JRadioButton q3o5;
+    private javax.swing.JRadioButton q4o1;
+    private javax.swing.JRadioButton q4o2;
+    private javax.swing.JRadioButton q4o3;
+    private javax.swing.JRadioButton q4o4;
+    private javax.swing.JRadioButton q4o5;
+    private javax.swing.JRadioButton q5o1;
+    private javax.swing.JRadioButton q5o2;
+    private javax.swing.JRadioButton q5o3;
+    private javax.swing.JRadioButton q5o4;
+    private javax.swing.JRadioButton q5o5;
+    private javax.swing.JTextField studentid;
+    private javax.swing.JComboBox<String> subject;
     private javax.swing.JButton submit;
+    private javax.swing.JLabel teacher_name;
     // End of variables declaration//GEN-END:variables
 }
