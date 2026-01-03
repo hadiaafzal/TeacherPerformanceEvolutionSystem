@@ -54,9 +54,9 @@ try {
     }
     rs2 = db.teacher(sem, dep, ID);
     while(rs2.next()){
-        subjectIds.add(rs.getString("sub_id"));
+        subjectIds.add(rs2.getString("sub_id"));
         String subName= rs2.getString("sub_name");
-        teacherIds.add(rs.getString("t_id"));
+        teacherIds.add(rs2.getString("t_id"));
         System.out.println(subName);
         subject.addItem(subName);
         }
@@ -64,6 +64,8 @@ try {
             System.out.println(e);
         }
         this.FullName=fullname.getText();
+        this.subjectIds=subjectIds;
+        this.teacherIds=teacherIds;
     }
     
    
