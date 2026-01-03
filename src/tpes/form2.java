@@ -838,6 +838,7 @@ try {
         int q10=Qmarks(q10o1,q10o2,q10o3,q10o4,q10o5);
         int total=q1+q2+q3+q4+q5+q6+q7+q8+q9+q10;
         if(db.feedback(ID, sub_id, t_id, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, total)==1){
+        JOptionPane.showMessageDialog(this, "Your feedback has been added");
         Std_home h=new Std_home(ID);
         h.setVisible(true);
         dispose();

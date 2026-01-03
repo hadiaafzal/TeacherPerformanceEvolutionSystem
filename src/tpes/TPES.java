@@ -135,7 +135,7 @@ public ResultSet teacher(int sem, String dept, String id){
         return null;
     }
 }
-public int feedback(String id, int sub_id, String t_id, float q1, float q2,float q3,float q4,float q5,float q6,float q7,float q8,float q9,float q10,float total){
+public int feedback(String id, int sub_id, String t_id, int q1, int q2,int q3,int q4,int q5,int q6,int q7,int q8,int q9,int q10,int total){
     
     int status=0;
     
