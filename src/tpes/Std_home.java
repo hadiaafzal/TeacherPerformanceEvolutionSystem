@@ -247,7 +247,7 @@ setOpaque(true);
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         // TODO add your handling code here:
         
-        form2 f=new form2();
+        form1 f=new form1();
         f.setVisible(true);
         dispose();
     }//GEN-LAST:event_confirmActionPerformed
