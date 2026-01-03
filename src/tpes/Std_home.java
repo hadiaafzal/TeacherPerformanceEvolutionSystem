@@ -5,6 +5,8 @@
 package tpes;
  import java.awt.Color;
 import java.awt.Component;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.UIManager;
@@ -15,14 +17,55 @@ import javax.swing.UIManager;
 public class Std_home extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Std_home.class.getName());
-
+    private String ID;
+    private String FullName;
+    private ArrayList teacherIds;
+    private ArrayList subjectIds;
     /**
      * Creates new form shome
      */
     public Std_home() {
         initComponents();
-       // jComboBox1.setRenderer(new DarkComboBoxRenderer()); 
     }
+    public Std_home(String ID) {
+        initComponents();
+       // jComboBox1.setRenderer(new DarkComboBoxRenderer());
+       TPES db=new TPES();
+       ArrayList<String> teacherIds = new ArrayList<>();
+       ArrayList<String> subjectIds = new ArrayList<>();
+        studentid.setText(ID);
+        ResultSet rs;
+        this.ID=ID;
+        String dep="";
+        int sem=0;
+        ResultSet rs2;
+        subject.removeAllItems(); // clear previous items
+        subject.addItem("Select Subject");
+try {
+    rs = db.studentName(ID);
+    if (rs.next()) {
+        String fname = rs.getString("st_fname");
+        String lname = rs.getString("st_lname");
+        dep=rs.getString("st_dept");
+        sem=Integer.parseInt(rs.getString("st_semester"));
+        System.out.println(sem);
+
+        fullname.setText(fname + " " + lname);
+    }
+    rs2 = db.teacher(sem, dep, ID);
+    while(rs2.next()){
+        subjectIds.add(rs.getString("sub_id"));
+        String subName= rs2.getString("sub_name");
+        teacherIds.add(rs.getString("t_id"));
+        System.out.println(subName);
+        subject.addItem(subName);
+        }
+} catch(Exception e){
+            System.out.println(e);
+        }
+        this.FullName=fullname.getText();
+    }
+    
    
 /**
  * A custom renderer to style JComboBox items with dark colors.
@@ -70,7 +113,7 @@ setOpaque(true);
 
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        subject = new javax.swing.JComboBox<>();
         confirm = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -80,8 +123,8 @@ setOpaque(true);
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        fullname = new javax.swing.JTextField();
+        studentid = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -90,12 +133,12 @@ setOpaque(true);
 
         jLabel9.setFont(new java.awt.Font("Cambria Math", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Select a Teacher");
+        jLabel9.setText("Select a Subject");
 
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select---", "IRFAN KHANDRO", "IMTIAZ HUSSAIN", "AMEEN KHWAJA", "JATIN KUMAR", "SHAHISTA LODHI", "NOMAN  BIN ZAHID", "ADEEL HUSSAIN", "ASIF KHAN", "HAQUE NAWAZ LASHARI" }));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+        subject.setBackground(new java.awt.Color(204, 204, 204));
+        subject.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        subject.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select---" }));
+        subject.addActionListener(this::subjectActionPerformed);
 
         confirm.setBackground(new java.awt.Color(0, 0, 255));
         confirm.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
@@ -114,7 +157,7 @@ setOpaque(true);
                         .addComponent(confirm))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -126,7 +169,7 @@ setOpaque(true);
                 .addGap(144, 144, 144)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(subject, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(147, Short.MAX_VALUE))
@@ -188,19 +231,17 @@ setOpaque(true);
         jLabel3.setForeground(new java.awt.Color(0, 33, 71));
         jLabel3.setText("STUDENT CENTER");
 
-        jTextField1.setEditable(false);
-        jTextField1.setBackground(new java.awt.Color(57, 77, 120));
-        jTextField1.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("Anas Khatri");
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        fullname.setEditable(false);
+        fullname.setBackground(new java.awt.Color(57, 77, 120));
+        fullname.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
+        fullname.setForeground(new java.awt.Color(255, 255, 255));
+        fullname.setBorder(null);
+        fullname.addActionListener(this::fullnameActionPerformed);
 
-        jTextField2.setBackground(new java.awt.Color(57, 77, 120));
-        jTextField2.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("CSC-25S-004");
-        jTextField2.setBorder(null);
+        studentid.setBackground(new java.awt.Color(57, 77, 120));
+        studentid.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
+        studentid.setForeground(new java.awt.Color(255, 255, 255));
+        studentid.setBorder(null);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -215,8 +256,8 @@ setOpaque(true);
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(108, 108, 108)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
         );
         jPanel2Layout.setVerticalGroup(
@@ -224,10 +265,10 @@ setOpaque(true);
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(533, 533, 533)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -239,10 +280,10 @@ setOpaque(true);
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void subjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subjectActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_subjectActionPerformed
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         // TODO add your handling code here:
@@ -252,9 +293,9 @@ setOpaque(true);
         dispose();
     }//GEN-LAST:event_confirmActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void fullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_fullnameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,7 +333,7 @@ setOpaque(true);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirm;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField fullname;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -303,7 +344,7 @@ setOpaque(true);
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField studentid;
+    private javax.swing.JComboBox<String> subject;
     // End of variables declaration//GEN-END:variables
 }

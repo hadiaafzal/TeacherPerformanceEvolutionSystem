@@ -62,6 +62,7 @@ public int studentsApp(String id, String fname, String lname, String email, Stri
     return status;
 
 }
+
 public ResultSet studentDetails(String id, String pass){
 
     String sql="select * from students where st_id= '"+id+"'  AND st_pass= '"+pass+"'  ";
@@ -72,6 +73,57 @@ public ResultSet studentDetails(String id, String pass){
     }
     return rs;
 }
+public ResultSet teacherDetails(String id, String pass){
+
+    String sql="select*from teachers where t_id='"+id+"' AND t_pass='"+pass+"'";
+    try{
+
+    rs=st.executeQuery(sql);
+    }catch(Exception e){
+    System.out.print(e);
+    }
+    return rs;
+}
+/**/
+public ResultSet adminDetails(String id, String pass){
+
+    String sql="select*from admins where a_id='"+id+"' AND a_pass='"+pass+"'";
+    try{
+
+    rs=st.executeQuery(sql);
+    }catch(Exception e){
+    System.out.print(e);
+    }
+    return rs;
+}
+public ResultSet studentName(String id){
+
+    String sql="select *from students where st_id='"+id+"'";
+    try{
+    rs=st.executeQuery(sql);
+    }catch(Exception e){
+    System.out.print(e);
+    }
+    return rs;
+}
+public ResultSet teacher(int sem, String dep, String id){
+    
+    String sql="SELECT teachers.*,subjects.* FROM subjects " +
+"INNER JOIN teachers ON subjects.t_id = teachers.t_id" +
+"             WHERE subjects.semester = '"+sem+"'" +
+"             AND subjects.dept = '"+dep+"'" +
+"             AND subjects.sub_id  NOT IN (" +
+"                 SELECT sub_id FROM feedback WHERE st_id = '"+id+"');";
+
+    try {
+        Statement stLocal = con.createStatement();
+        return stLocal.executeQuery(sql);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
 
     /**
      * @param args the command line arguments

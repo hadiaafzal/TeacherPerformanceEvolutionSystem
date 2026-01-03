@@ -253,20 +253,49 @@ public class Login extends javax.swing.JFrame {
     
     TPES db=new TPES();
         ResultSet rs;
-        String ID=user_id.getText().toUpperCase();
+        ResultSet trs;
+        ResultSet ars;
+
+        String ID=user_id.getText();
 
         try{
             rs=db.studentDetails(user_id.getText(), password.getText());
             if(rs.next()){
                 //match selection
 
-                Std_home s=new Std_home();
-                 s.setVisible(true);
-                    dispose();
+                Std_home h=new Std_home(ID);
+                h.setVisible(true);
+                dispose();
                 return;
             }
-             JOptionPane.showMessageDialog(this,"login alert","Error",2);
+            
+            /*
+            ars=db.adminDetails(user_id.getText(), password.getText());
+            
+            
+            if(ars.next()){
+                //match selection
 
+                AdminHome th=new AdminHome(ID);
+                th.setVisible(true);
+                dispose();
+                return;
+            }
+            
+            
+
+            trs=db.teacherDetails(user_id.getText(), password.getText());
+
+            if(trs.next()){
+                //match selection
+
+                t_home th=new t_home(ID);
+                th.setVisible(true);
+                dispose();
+                return;
+            }
+               */
+            JOptionPane.showMessageDialog(this,"login alert","Error",2);
         }catch(Exception e){
             System.out.println(e);
         }
