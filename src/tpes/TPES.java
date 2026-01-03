@@ -108,14 +108,18 @@ public ResultSet studentName(String id){
 }
 public ResultSet teacher(int sem, String dept, String id){
 
- String sql= "select d.dept_name,"
-         + "s.sub_name, s.sub_id,"
-         + " d.t_id  from subjects s"
-         + " inner join departments d on s.sub_id = d.sub_id where semester ='"+sem+"' and dept_name= '"+dept+"' ";
-    
- /*  String sql=  "SELECT sub_name, sub_id, t.t_id FROM subjects s " +
-                 "INNER JOIN teachers t ON t.t_id = s.t_id " +
-                 "WHERE dept = '"+dept+"' AND semester = '"+sem+"'";  */
+
+ 
+ String sql = "SELECT d.dept_name, s.sub_name, s.sub_id, d.t_id, " +
+                 "t.t_fname, t.t_lname, s.semester " + 
+                 "FROM subjects s " +
+                 "INNER JOIN departments d ON s.sub_id = d.sub_id " +
+                 "INNER JOIN teachers t ON d.t_id = t.t_id " +
+                 "WHERE s.semester = '" + sem + "' " +
+                 "AND d.dept_name = '" + dept + "' " +
+                 "AND s.sub_id NOT IN (SELECT sub_id FROM feedback WHERE st_id = '" + id + "')";
+        
+ 
   /*String sql="SELECT teachers.*,subjects.* FROM subjects " +
 "INNER JOIN teachers ON subjects.t_id = teachers.t_id" +
 "             WHERE subjects.semester = '"+sem+"'" +
