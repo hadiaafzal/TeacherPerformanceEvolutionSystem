@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 /**
  *
@@ -21,6 +22,7 @@ public class Std_home extends javax.swing.JFrame {
     private String FullName;
     private ArrayList teacherIds;
     private ArrayList subjectIds;
+    private ArrayList teacherName;
     /**
      * Creates new form shome
      */
@@ -33,6 +35,7 @@ public class Std_home extends javax.swing.JFrame {
        TPES db=new TPES();
        ArrayList<String> teacherIds = new ArrayList<>();
        ArrayList<String> subjectIds = new ArrayList<>();
+       ArrayList<String> teacherName = new ArrayList<>();
         studentid.setText(ID);
         ResultSet rs;
         this.ID=ID;
@@ -57,7 +60,10 @@ try {
         subjectIds.add(rs2.getString("sub_id"));
         String subName= rs2.getString("sub_name");
         teacherIds.add(rs2.getString("t_id"));
-        System.out.println(subName);
+        String teacherFName=rs2.getString("t_fname");
+        String teacherLName=rs2.getString("t_lname");
+        String teacherFullName=teacherFName+" "+teacherLName;
+        teacherName.add(teacherFullName);
         subject.addItem(subName);
         }
 } catch(Exception e){
@@ -66,6 +72,7 @@ try {
         this.FullName=fullname.getText();
         this.subjectIds=subjectIds;
         this.teacherIds=teacherIds;
+        this.teacherName=teacherName;
     }
     
    
@@ -127,6 +134,7 @@ setOpaque(true);
         jLabel3 = new javax.swing.JLabel();
         fullname = new javax.swing.JTextField();
         studentid = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -245,6 +253,12 @@ setOpaque(true);
         studentid.setForeground(new java.awt.Color(255, 255, 255));
         studentid.setBorder(null);
 
+        jButton1.setBackground(new java.awt.Color(255, 0, 51));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("LOGOUT");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -254,12 +268,15 @@ setOpaque(true);
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(190, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(30, 30, 30))
         );
         jPanel2Layout.setVerticalGroup(
@@ -271,7 +288,9 @@ setOpaque(true);
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(533, 533, 533)
+                .addGap(290, 290, 290)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(206, 206, 206)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -289,15 +308,33 @@ setOpaque(true);
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
         // TODO add your handling code here:
-        
-        form1 f=new form1();
+
+
+        int selectedIndex = subject.getSelectedIndex();
+        if(subject.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(this,"Please select a subject");
+        }
+        else{
+        String selectedTeacherId =teacherIds.get(selectedIndex-1).toString();
+        String selectedSubjectId =subjectIds.get(selectedIndex-1).toString();
+        String selectedTeacherName =teacherName.get(selectedIndex-1).toString();
+        form1 f=new form1(ID,FullName,selectedSubjectId,selectedTeacherId,selectedTeacherName);
+
         f.setVisible(true);
         dispose();
+        }
     }//GEN-LAST:event_confirmActionPerformed
 
     private void fullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fullnameActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Login l=new Login();
+        l.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -336,6 +373,7 @@ setOpaque(true);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirm;
     private javax.swing.JTextField fullname;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
