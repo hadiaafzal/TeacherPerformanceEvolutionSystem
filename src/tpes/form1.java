@@ -21,23 +21,28 @@ public class form1 extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(form1.class.getName());
     private String ID;
     private String FullName;
+    private int sub_id;
+    private String t_id;
+    private String teacher;
     private ArrayList teacherIds;
     private ArrayList subjectIds;
     private ArrayList teacherName;
     public form1() {
         initComponents();
-        teacher_name.setText("Haq Nawaz lashari");
     }
-    public form1(String ID, String name,String sub_id, String t_id, String teacher) {
+    public form1(String ID, String name,int sub_id, String t_id, String teacher) {
         initComponents();
         TPES db=new TPES();
        ArrayList<String> teacherIds = new ArrayList<>();
-       ArrayList<String> subjectIds = new ArrayList<>();
+       ArrayList<Integer> subjectIds = new ArrayList<>();
        ArrayList<String> teacherName = new ArrayList<>();
         studentid.setText(ID);
         teacher_name.setText(teacher);
         ResultSet rs;
         this.ID=ID;
+        this.sub_id=sub_id;
+        this.t_id=t_id;
+        this.teacher=teacher;
         String dep="";
         int sem=0;
         ResultSet rs2;
@@ -56,7 +61,7 @@ try {
     }
     rs2 = db.teacher(sem, dep, ID);
     while(rs2.next()){
-        subjectIds.add(rs2.getString("sub_id"));
+        subjectIds.add(Integer.parseInt(rs2.getString("sub_id")));
         String subName= rs2.getString("sub_name");
         teacherIds.add(rs2.getString("t_id"));
         String teacherFName=rs2.getString("t_fname");
@@ -151,7 +156,7 @@ try {
         q5o4 = new javax.swing.JRadioButton();
         q5o5 = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
-        submit = new javax.swing.JButton();
+        next = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         subject = new javax.swing.JComboBox<>();
@@ -632,15 +637,15 @@ try {
             }
         });
 
-        submit.setBackground(new java.awt.Color(0, 153, 204));
-        submit.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        submit.setForeground(new java.awt.Color(255, 255, 255));
-        submit.setText("NEXT");
-        submit.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
-        submit.setBorderPainted(false);
-        submit.setCursor(new java.awt.Cursor(java.awt.Cursor.W_RESIZE_CURSOR));
-        submit.setDoubleBuffered(true);
-        submit.addActionListener(this::submitActionPerformed);
+        next.setBackground(new java.awt.Color(0, 153, 204));
+        next.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        next.setForeground(new java.awt.Color(255, 255, 255));
+        next.setText("NEXT");
+        next.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        next.setBorderPainted(false);
+        next.setCursor(new java.awt.Cursor(java.awt.Cursor.W_RESIZE_CURSOR));
+        next.setDoubleBuffered(true);
+        next.addActionListener(this::nextActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -673,7 +678,7 @@ try {
                         .addGap(25, 25, 25)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -686,7 +691,7 @@ try {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(studentid, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(296, 296, 296)
-                        .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(next, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -811,8 +816,12 @@ try {
         dispose();
     }//GEN-LAST:event_jLabel5MousePressed
 
-    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+    private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
         // TODO add your handling code here:
+        if(buttonGroup1.getSelection()==null || buttonGroup2.getSelection()==null || buttonGroup3.getSelection()==null || buttonGroup4.getSelection()==null || buttonGroup5.getSelection()==null){
+        JOptionPane.showMessageDialog(this, "Please Select all the options");
+        }
+        else{
         int q1=Qmarks(q1o1,q1o2,q1o3,q1o4,q1o5);
         int q2=Qmarks(q2o1,q2o2,q2o3,q2o4,q2o5);
         int q3=Qmarks(q3o1,q3o2,q3o3,q3o4,q3o5);
@@ -820,12 +829,12 @@ try {
         int q5=Qmarks(q5o1,q5o2,q5o3,q5o4,q5o5);
         
         // Change return type to 'int' and parameters to 'JRadioButton'
-        form2 f=new form2();
+        form2 f=new form2(ID,FullName,sub_id,t_id,teacher,q1,q2,q3,q4,q5);
         f.setVisible(true);
         dispose();
+        }
 
-
-    }//GEN-LAST:event_submitActionPerformed
+    }//GEN-LAST:event_nextActionPerformed
 
     private void subjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subjectActionPerformed
         // TODO add your handling code here:
@@ -839,7 +848,7 @@ try {
         }
         else{
         String selectedTeacherId =teacherIds.get(selectedIndex-1).toString();
-        String selectedSubjectId =subjectIds.get(selectedIndex-1).toString();
+        int selectedSubjectId =Integer.parseInt(subjectIds.get(selectedIndex-1).toString());
         String selectedTeacherName =teacherName.get(selectedIndex-1).toString();
         form1 f=new form1(ID,FullName,selectedSubjectId,selectedTeacherId,selectedTeacherName);
         f.setVisible(true);
@@ -903,6 +912,7 @@ try {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JButton next;
     private javax.swing.JRadioButton o11;
     private javax.swing.JRadioButton o12;
     private javax.swing.JRadioButton o13;
@@ -935,7 +945,6 @@ try {
     private javax.swing.JRadioButton q5o5;
     private javax.swing.JTextField studentid;
     private javax.swing.JComboBox<String> subject;
-    private javax.swing.JButton submit;
     private javax.swing.JLabel teacher_name;
     // End of variables declaration//GEN-END:variables
 }

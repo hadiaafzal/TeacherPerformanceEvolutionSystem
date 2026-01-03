@@ -135,6 +135,38 @@ public ResultSet teacher(int sem, String dept, String id){
         return null;
     }
 }
+public int feedback(String id, int sub_id, String t_id, float q1, float q2,float q3,float q4,float q5,float q6,float q7,float q8,float q9,float q10,float total){
+    
+    int status=0;
+    
+    String sql="INSERT INTO feedback(st_id,sub_id ,t_id ,q1 ,q2,q3,q4,q5,q6,q7,q8,q9,q10,total_score) " +
+"   VALUES('"+id+"',"+sub_id+",'"+t_id+"',"+q1+","+q2+","+q3+","+q4+","+q5+","+q6+","+q7+","+q8+","+q9+","+q10+","+total+");";
+    try{
+    st.executeUpdate(sql);
+    status =1;
+    }catch(Exception e){
+    System.out.println(e);
+    }
+    return status;
+
+}
+/*INSERT INTO [dbo].[feedback]
+           ([st_id]
+           ,[sub_id]
+           ,[t_id]
+           ,[q1]
+           ,[q2]
+           ,[q3]
+           ,[q4]
+           ,[q5]
+           ,[q6]
+           ,[q7]
+           ,[q8]
+           ,[q9]
+           ,[q10]
+           ,[total_score])
+     VALUES
+           ()*/
 
 
     /**

@@ -34,7 +34,7 @@ public class Std_home extends javax.swing.JFrame {
        // jComboBox1.setRenderer(new DarkComboBoxRenderer());
        TPES db=new TPES();
        ArrayList<String> teacherIds = new ArrayList<>();
-       ArrayList<String> subjectIds = new ArrayList<>();
+       ArrayList<Integer> subjectIds = new ArrayList<>();
        ArrayList<String> teacherName = new ArrayList<>();
         studentid.setText(ID);
         ResultSet rs;
@@ -57,7 +57,7 @@ try {
     }
     rs2 = db.teacher(sem, dep, ID);
     while(rs2.next()){
-        subjectIds.add(rs2.getString("sub_id"));
+        subjectIds.add(Integer.parseInt(rs2.getString("sub_id")));
         String subName= rs2.getString("sub_name");
         teacherIds.add(rs2.getString("t_id"));
         String teacherFName=rs2.getString("t_fname");
@@ -316,7 +316,7 @@ setOpaque(true);
         }
         else{
         String selectedTeacherId =teacherIds.get(selectedIndex-1).toString();
-        String selectedSubjectId =subjectIds.get(selectedIndex-1).toString();
+        int selectedSubjectId =Integer.parseInt(subjectIds.get(selectedIndex-1).toString());
         String selectedTeacherName =teacherName.get(selectedIndex-1).toString();
         form1 f=new form1(ID,FullName,selectedSubjectId,selectedTeacherId,selectedTeacherName);
 
