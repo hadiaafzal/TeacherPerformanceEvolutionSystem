@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -174,7 +175,24 @@ public int feedback(String id, int sub_id, String t_id, int q1, int q2,int q3,in
     return status;
 
 }
+public ResultSet tGraph(String t_id,int sub_id){
+ 
+ String sql = "select AVG(total_score) AS avg_score from feedback " +
+"where t_id='"+t_id+"' and sub_id="+sub_id+"";
+      
+    try {
+        Statement stLocal = con.createStatement();
+        return stLocal.executeQuery(sql);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
 
+/*
+select AVG(total_score) from feedback 
+where t_id='tid-001' and sub_id=61
+*/
     /**
      * @param args the command line arguments
      */
