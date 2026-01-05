@@ -107,6 +107,115 @@ public ResultSet studentName(String id){
     }
     return rs;
 }
+public ResultSet adminName(String id){
+
+    String sql="select *from admins where a_id='"+id+"'";
+    try{
+    rs=st.executeQuery(sql);
+    }catch(Exception e){
+    System.out.print(e);
+    }
+    return rs;
+}
+
+
+
+/*
+ 
+public ResultSet deptfeedback(String dept) {
+    // Fixed: Added comma after s.semester and spaces before JOINs
+    String sql = "SELECT f.f_id, s.sub_id, f.st_id, f.t_id, f.total_score, s.sub_name, s.course_code, s.semester, d.dept_name " +
+                 "FROM feedback f " +
+                 "INNER JOIN subjects s ON s.sub_id = f.sub_id " +
+                "INNER JOIN departments d ON d.sub_id = s.sub_id " +
+                 "WHERE d.dept_name = '" + dept + "'";
+
+    try {
+        Statement localSt = con.createStatement(); 
+        return localSt.executeQuery(sql);
+    } catch (Exception e) {
+        System.out.print("Database Error in deptfeedback: " + e);
+        return null; // Return null if it fails
+    }
+}*/
+
+
+public ResultSet searchstd(String search){
+        String sql = "SELECT * FROM students WHERE St_ID='"+search+"' or St_fName like '%"+search+"%' or St_Dept = '"+search+"' or st_Email = '"+search+"'  or st_semeter = '"+search+"'  or st_CNIC = '"+search+"'   ";
+        try{
+            rs = st.executeQuery(sql);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
+
+
+public ResultSet searchtea(String search){
+        String sql = "SELECT * FROM teachers WHERE t_ID='"+search+"' or t_fName like '%"+search+"%' or t_Email = '"+search+"'  or t_pno = '"+search+"'   ";
+        try{
+            rs = st.executeQuery(sql);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
+
+public ResultSet stdData(String ID){
+        String sql = "select st_id,st_fname,st_lname,st_email,st_pno,st_dept,st_cnic,st_semester from students";
+        try{
+            rs = st.executeQuery(sql);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
+
+public ResultSet teaData(String ID) {
+    String sql = "SELECT t_id, t_fname, t_lname, t_email, t_pno  from teachers";
+                
+    try {
+        rs = st.executeQuery(sql);
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+    return rs;
+}
+
+public ResultSet getCombinedFeedback(String semester, String department) {
+    String sql = "SELECT f.f_id, f.st_id, s.sub_id, f.t_id, f.total_score, s.sub_name, s.course_code, s.semester, d.dept_name " +
+                 "FROM feedback f " +
+                 "INNER JOIN subjects s ON s.sub_id = f.sub_id " +
+                 "INNER JOIN departments d ON d.sub_id = s.sub_id " +
+                 "WHERE s.semester = '" + semester + "' AND d.dept_name = '" + department + "'"; 
+
+    try {
+        Statement localSt = con.createStatement();
+        return localSt.executeQuery(sql);
+    } catch (Exception e) {
+        System.out.println("Database Error in getCombinedFeedback: " + e);
+        return null;
+    }
+}
+/*
+
+public ResultSet semfeedback(String sem){
+   String sql = "SELECT f.f_id, f.st_id, s.sub_id, f.t_id, f.total_score, s.sub_name, s.course_code, s.semester, d.dept_name " +
+             "FROM feedback f " +
+             "INNER JOIN subjects s ON s.sub_id = f.sub_id " +
+             "INNER JOIN departments d ON d.dept_id = s.dept_id " + 
+             "WHERE s.semester = '" + sem + "'";
+
+try{
+            Statement localSt = con.createStatement(); 
+        return localSt.executeQuery(sql);
+        }
+catch(Exception e){
+        System.out.print("Database Error: " + e);
+        } 
+       return null;
+}
+*/
 
 public ResultSet teacherName(String id){
 
@@ -118,6 +227,7 @@ public ResultSet teacherName(String id){
     }
     return rs;
 }
+
 public ResultSet subjects(int sem, String dept, String id){
  
  String sql = "SELECT  d.dept_name, s.sub_name, s.sub_id, d.t_id, " +
