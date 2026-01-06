@@ -24,11 +24,12 @@ private String ID;
     }
     public studentsData(String ID, String FullName) {
         initComponents(); 
+        fullname.setText(FullName);
         this.ID = ID;
         this.FullName = FullName;
         
          a_id.setText(ID);
-        fullname.setText(FullName);
+        
      loadTableData(ID);
     }
     
@@ -55,55 +56,6 @@ private String ID;
         e.printStackTrace(); 
     }
 }
-
-       
-    /*
-    private void updateTableData() {
-    // 1. Get current values from BOTH combo boxes
-    String selectedSem = sem.getSelectedItem().toString();
-    String selectedDept = dept.getSelectedItem().toString(); // 
-
-    // 2. Clear the table before adding new combined data
-    DefaultTableModel tb = (DefaultTableModel) records.getModel();
-    tb.setRowCount(0); 
-
-    try {
-        TPES db = new TPES();
-        
-        // 3. Fetch data for BOTH conditions
-        ResultSet rs2 = db.semfeedback(selectedSem);
-        ResultSet rs3 = db.deptfeedback(selectedDept);
-
-        // 4. Fill table with results from the semester query
-        while(rs2 != null && rs2.next()) {
-            tb.addRow(new String[]{
-                rs2.getString("f_id"), rs2.getString("st_id"), rs2.getString("sub_id"),
-                rs2.getString("t_id"), rs2.getString("total_score"), rs2.getString("sub_name"),
-                rs2.getString("course_code"), rs2.getString("semester"),rs2.getString("dept_name")
-            });
-        }
-
-        // 5. Fill table with results from the department query
-        while(rs3 != null && rs3.next()) {
-            tb.addRow(new String[]{
-                rs3.getString("f_id"), rs3.getString("st_id"), rs3.getString("sub_id"),
-                rs3.getString("t_id"), rs3.getString("total_score"), rs3.getString("sub_name"),
-                rs3.getString("course_code"), rs3.getString("semester"),rs3.getString("dept_name")
-            });
-        }
-
-        // 6. Close ResultSets safely
-        if (rs2 != null) rs2.close();
-        if (rs3 != null) rs3.close();
-
-    } catch (Exception e) {
-        System.out.print("Database Error: " + e);
-    }
-    tb.fireTableDataChanged(); 
-}
-    */
-    
-    
     
     
 private void updateTableData() {
@@ -115,13 +67,15 @@ private void updateTableData() {
     DefaultTableModel tb = (DefaultTableModel) records.getModel(); // Ensure 'records' is your JTable name
     tb.setRowCount(0); 
 
-    ResultSet combinedRs = null; 
+    ResultSet combinedRs = null; // Declare ResultSet outside try block
 
     try {
         TPES db = new TPES();
         
+        // 3. Fetch data using ONE query with BOTH filters
         combinedRs = db.getCombinedFeedback(selectedSem, selectedDept); 
 
+        // 4. Fill table using the single, filtered ResultSet
         while(combinedRs != null && combinedRs.next()) {
             tb.addRow(new String[]{
                 combinedRs.getString("f_id"), combinedRs.getString("st_id"), combinedRs.getString("sub_id"),
@@ -180,7 +134,7 @@ private void updateTableData() {
         jScrollPane1 = new javax.swing.JScrollPane();
         records = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchbox = new javax.swing.JTextField();
         search = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -207,11 +161,11 @@ private void updateTableData() {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(251, 251, 251)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 582, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(370, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -348,6 +302,7 @@ private void updateTableData() {
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Show");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -470,7 +425,7 @@ private void updateTableData() {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
@@ -489,7 +444,7 @@ private void updateTableData() {
         jLabel4.setFont(new java.awt.Font("Cambria Math", 1, 14)); // NOI18N
         jLabel4.setText("Enter Student ID To Search");
 
-        jTextField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.darkGray, java.awt.Color.gray, java.awt.Color.darkGray, java.awt.Color.gray));
+        searchbox.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.darkGray, java.awt.Color.gray, java.awt.Color.darkGray, java.awt.Color.gray));
 
         search.setBackground(new java.awt.Color(0, 153, 204));
         search.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -509,9 +464,9 @@ private void updateTableData() {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(searchbox, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 400, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(STUDENTS, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -543,7 +498,7 @@ private void updateTableData() {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(a_id, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9)
@@ -578,13 +533,28 @@ private void updateTableData() {
 
     private void deptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deptActionPerformed
         // TODO add your handling code here:
-                    //updateTableData(); 
-
+        //updateTableData();
+        if(dept.getSelectedIndex()!=0 && sem.getSelectedIndex()!=0){
+        int deptIndex=dept.getSelectedIndex();
+        int semIndex=sem.getSelectedIndex();
+        
+        A_home a=new A_home(ID,deptIndex, semIndex);
+        a.setVisible(true);
+        dispose();
+        }
     }//GEN-LAST:event_deptActionPerformed
 
     private void semActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semActionPerformed
         // TODO add your handling code here:
             //updateTableData(); 
+            if(dept.getSelectedIndex()!=0 && sem.getSelectedIndex()!=0){
+        int deptIndex=dept.getSelectedIndex();
+        int semIndex=sem.getSelectedIndex();
+        
+        A_home a=new A_home(ID,deptIndex, semIndex);
+        a.setVisible(true);
+        dispose();
+        }
     }//GEN-LAST:event_semActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -596,12 +566,12 @@ private void updateTableData() {
         // TODO add your handling code here:
        TPES db = new TPES();
         ResultSet rs;
-        rs = db.searchstd(search.getText());
+        rs = db.searchstd(searchbox.getText());
         DefaultTableModel tb = (DefaultTableModel)records.getModel();
         tb.setRowCount(0);
         try{
             while(rs.next()){
-               tb.addRow(new Object[]{
+               tb.addRow(new String[]{
                rs.getString("st_id"),
                 rs.getString("st_fname"),
                 rs.getString("st_lname"),
@@ -616,6 +586,13 @@ private void updateTableData() {
             System.out.println(e);
         }
     }//GEN-LAST:event_searchActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        teachersData t=new teachersData(ID,FullName);
+        t.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -672,9 +649,9 @@ private void updateTableData() {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable records;
     private javax.swing.JButton search;
+    private javax.swing.JTextField searchbox;
     private javax.swing.JComboBox<String> sem;
     private javax.swing.JComboBox<String> semester;
     // End of variables declaration//GEN-END:variables

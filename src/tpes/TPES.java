@@ -7,6 +7,7 @@ package tpes;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -92,7 +93,7 @@ public ResultSet adminDetails(String id, String pass){
     try{
 
     rs=st.executeQuery(sql);
-    }catch(Exception e){
+    }catch(SQLException e){
     System.out.print(e);
     }
     return rs;
@@ -141,7 +142,7 @@ public ResultSet deptfeedback(String dept) {
 
 
 public ResultSet searchstd(String search){
-        String sql = "SELECT * FROM students WHERE St_ID='"+search+"' or St_fName like '%"+search+"%' or St_Dept = '"+search+"' or st_Email = '"+search+"'  or st_semeter = '"+search+"'  or st_CNIC = '"+search+"'   ";
+        String sql = "SELECT * FROM students WHERE st_id LIKE '%"+search+"%'  or st_fname like '%"+search+"%' or st_lname like '%"+search+"%' or st_dept like '%"+search+"%' or st_email like '%"+search+"%'  or CAST(st_semester as varchar) like '"+search+"'  or st_cnic LIKE '%"+search+"%' or st_pno LIKE '%"+search+"%'   ";
         try{
             rs = st.executeQuery(sql);
         }catch(Exception e){
@@ -152,7 +153,7 @@ public ResultSet searchstd(String search){
 
 
 public ResultSet searchtea(String search){
-        String sql = "SELECT * FROM teachers WHERE t_ID='"+search+"' or t_fName like '%"+search+"%' or t_Email = '"+search+"'  or t_pno = '"+search+"'   ";
+        String sql = "SELECT * FROM teachers WHERE t_id Like '%"+search+"%' or t_fname like '%"+search+"%' or t_lname like '%"+search+"%'or t_email like '%"+search+"%'  or t_pno LIKE '%"+search+"%'   ";
         try{
             rs = st.executeQuery(sql);
         }catch(Exception e){
@@ -285,10 +286,42 @@ public int feedback(String id, int sub_id, String t_id, int q1, int q2,int q3,in
     return status;
 
 }
+public ResultSet SearchFeedback(String semester, String department,String search) {
+    String sql = "SELECT f.f_id, f.st_id, s.sub_id, f.t_id, f.total_score, s.sub_name, s.course_code, s.semester, d.dept_name " +
+                 "FROM feedback f " +
+                 "INNER JOIN subjects s ON s.sub_id = f.sub_id " +
+                 "INNER JOIN departments d ON d.sub_id = s.sub_id " +
+                 "WHERE (s.semester = '" + semester + "' AND d.dept_name = '" + department + "') "+
+                 "AND (CAST(f.f_id as VARCHAR) like '%"+search+"%' OR f.st_id LIKE'%"+search+"%' OR CAST(s.sub_id as VARCHAR) LIKE '%"+search+"%' OR f.t_id like '%"+search+"%' OR CAST(f.total_score as varchar) like '%"+search+"%' OR s.sub_name like '%"+search+"%' OR s.course_code like '%"+search+"%' OR s.semester like '%"+search+"%' OR d.dept_name like '%"+search+"%' )"; 
+
+    try {
+        Statement localSt = con.createStatement();
+        return localSt.executeQuery(sql);
+    } catch (Exception e) {
+        System.out.println("Database Error in SearchFeedback: " + e);
+        return null;
+    }
+}
 public ResultSet tGraph(String t_id,int sub_id){
  
  String sql = "select AVG(total_score) AS avg_score from feedback " +
 "where t_id='"+t_id+"' and sub_id="+sub_id+"";
+      
+    try {
+        Statement stLocal = con.createStatement();
+        return stLocal.executeQuery(sql);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+public ResultSet semGraph(int sem){
+ 
+ String sql = "select avg(f.total_score) as avg_score, d.dept_name from feedback f" +
+"INNER JOIN subjects s ON s.sub_id = f.sub_id " +
+"INNER JOIN departments d ON d.sub_id = s.sub_id " +
+"WHERE s.semester = '"+sem+"'" +
+"GROUP BY d.dept_name;";
       
     try {
         Statement stLocal = con.createStatement();

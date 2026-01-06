@@ -45,11 +45,11 @@
                   <Component id="jLabel6" min="-2" pref="85" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="107" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="251" max="-2" attributes="0"/>
+                  <EmptySpace pref="582" max="32767" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel7" min="-2" pref="61" max="-2" attributes="0"/>
-                  <EmptySpace pref="370" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -128,10 +128,10 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jTextField1" min="-2" pref="114" max="-2" attributes="0"/>
-                                      <Component id="jLabel4" min="-2" pref="192" max="-2" attributes="0"/>
+                                      <Component id="jLabel4" alignment="0" min="-2" pref="192" max="-2" attributes="0"/>
+                                      <Component id="searchbox" alignment="0" min="-2" pref="114" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="400" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace max="32767" attributes="0"/>
@@ -177,7 +177,7 @@
                               <Component id="a_id" pref="27" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                          <Component id="searchbox" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="search" min="-2" pref="26" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
@@ -671,6 +671,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Show"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -731,7 +734,7 @@
                     <Column editable="false" title="Contact" type="java.lang.String"/>
                     <Column editable="false" title="Department" type="java.lang.String"/>
                     <Column editable="false" title="NIC" type="java.lang.String"/>
-                    <Column editable="false" title="Semester" type="java.lang.Integer"/>
+                    <Column editable="false" title="Semester" type="java.lang.String"/>
                   </Table>
                 </Property>
               </Properties>
@@ -746,7 +749,7 @@
             <Property name="text" type="java.lang.String" value="Enter Student ID To Search"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="searchbox">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">

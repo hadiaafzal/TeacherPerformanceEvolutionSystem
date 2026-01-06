@@ -94,7 +94,7 @@ private String ID;
         jScrollPane1 = new javax.swing.JScrollPane();
         record = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchbox = new javax.swing.JTextField();
         search = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,22 +121,22 @@ private String ID;
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(251, 251, 251)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 594, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(370, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel2)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -403,7 +403,7 @@ private String ID;
         jLabel4.setFont(new java.awt.Font("Cambria Math", 1, 14)); // NOI18N
         jLabel4.setText("Enter Teacher ID To Search");
 
-        jTextField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.darkGray, java.awt.Color.gray, java.awt.Color.darkGray, java.awt.Color.gray));
+        searchbox.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, java.awt.Color.darkGray, java.awt.Color.gray, java.awt.Color.darkGray, java.awt.Color.gray));
 
         search.setBackground(new java.awt.Color(0, 153, 204));
         search.setText("SEARCH");
@@ -434,7 +434,7 @@ private String ID;
                                         .addGap(61, 61, 61)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(searchbox, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(0, 8, Short.MAX_VALUE)))
                         .addGap(14, 14, 14))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -453,7 +453,7 @@ private String ID;
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGap(39, 39, 39)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(searchbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -495,16 +495,34 @@ private String ID;
     private void deptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deptActionPerformed
         // TODO add your handling code here:
                     //updateTableData(); 
-
+                    if(dept.getSelectedIndex()!=0 && sem.getSelectedIndex()!=0){
+        int deptIndex=dept.getSelectedIndex();
+        int semIndex=sem.getSelectedIndex();
+        
+        A_home a=new A_home(ID,deptIndex, semIndex);
+        a.setVisible(true);
+        dispose();
+                    }
     }//GEN-LAST:event_deptActionPerformed
 
     private void semActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semActionPerformed
         // TODO add your handling code here:
             //updateTableData(); 
+            if(dept.getSelectedIndex()!=0 && sem.getSelectedIndex()!=0){
+        int deptIndex=dept.getSelectedIndex();
+        int semIndex=sem.getSelectedIndex();
+        
+        A_home a=new A_home(ID,deptIndex, semIndex);
+        a.setVisible(true);
+        dispose();
+            }
     }//GEN-LAST:event_semActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+         studentsData h=new studentsData(ID, FullName);
+                h.setVisible(true);
+                dispose();
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -513,12 +531,12 @@ private String ID;
             // TODO add your handling code here:
       TPES db = new TPES();
         ResultSet rs;
-        rs = db.searchtea(search.getText());
+        rs = db.searchtea(searchbox.getText());
         DefaultTableModel tb = (DefaultTableModel)record.getModel();
         tb.setRowCount(0);
         try{
             while(rs.next()){
-             tb.addRow(new Object[]{
+             tb.addRow(new String[]{
                 rs.getString("t_id"), 
                 rs.getString("t_fname"),
                 rs.getString("t_lname"),
@@ -586,9 +604,9 @@ private String ID;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable record;
     private javax.swing.JButton search;
+    private javax.swing.JTextField searchbox;
     private javax.swing.JComboBox<String> sem;
     private javax.swing.JComboBox<String> semester;
     // End of variables declaration//GEN-END:variables
