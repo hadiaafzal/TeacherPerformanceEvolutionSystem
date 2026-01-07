@@ -26,7 +26,6 @@ private String ID;
         initComponents();
         a_id.setText(ID);  
         this.ID=ID;
-        this.FullName=fullname.getText();
         TPES db=new TPES();
         ResultSet rs = db.adminName(ID);
         ResultSet rs2 =db.allteachers(ID);
@@ -54,6 +53,7 @@ allteachers.addItem(new TeacherItem(f, l));
 } catch(Exception e){
             System.out.println(e);
         }
+        this.FullName=fullname.getText();
       
     }
     public A_home(String ID,int department, int semester) {
@@ -299,6 +299,7 @@ private void updateTableData() {
         overall.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         overall.setForeground(new java.awt.Color(255, 255, 255));
         overall.setText("Overall");
+        overall.addActionListener(this::overallActionPerformed);
 
         teachers.setBackground(new java.awt.Color(0, 0, 153));
         teachers.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -505,9 +506,9 @@ private void updateTableData() {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(searchbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(search))))
-                        .addGap(40, 40, 40)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -593,6 +594,13 @@ private void updateTableData() {
 
     }//GEN-LAST:event_searchActionPerformed
 
+    private void overallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overallActionPerformed
+        // TODO add your handling code here:
+        semWiseGraph s=new semWiseGraph(ID,FullName,semester.getSelectedIndex());
+        s.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_overallActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -663,7 +671,6 @@ private void updateTableData() {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton overall;
     private javax.swing.JButton overall1;
     private javax.swing.JTable records;

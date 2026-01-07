@@ -329,7 +329,7 @@ public ResultSet tGraph(String t_id,int sub_id){
 }
 public ResultSet semGraph(int sem){
  
- String sql = "select avg(f.total_score) as avg_score, d.dept_name from feedback f" +
+ String sql = "select avg(f.total_score) as avg_score, d.dept_name from feedback f " +
 "INNER JOIN subjects s ON s.sub_id = f.sub_id " +
 "INNER JOIN departments d ON d.sub_id = s.sub_id " +
 "WHERE s.semester = '"+sem+"'" +
