@@ -172,6 +172,18 @@ public ResultSet stdData(String ID){
         return rs;
     }
 
+public ResultSet allteachers(String ID) {
+    String sql = "SELECT  t_fname, t_lname from teachers";
+                
+      try {
+        Statement localSt = con.createStatement(); 
+        return localSt.executeQuery(sql);
+    } catch (Exception e) {
+        System.out.print("Database Error in deptfeedback: " + e);
+        return null;
+    }
+}
+
 public ResultSet teaData(String ID) {
     String sql = "SELECT t_id, t_fname, t_lname, t_email, t_pno  from teachers";
                 
