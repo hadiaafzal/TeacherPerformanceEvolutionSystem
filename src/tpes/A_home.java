@@ -609,14 +609,14 @@ private void updateTableData() {
 
     }//GEN-LAST:event_searchActionPerformed
 
-<<<<<<< Updated upstream
+
     private void overallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overallActionPerformed
         // TODO add your handling code here:
         semWiseGraph s=new semWiseGraph(ID,FullName,semester.getSelectedIndex());
         s.setVisible(true);
         dispose();
     }//GEN-LAST:event_overallActionPerformed
-=======
+
     private void teawiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teawiseActionPerformed
         // TODO add your handling code here:
                 teawisegraph h=new teawisegraph();
@@ -624,7 +624,7 @@ private void updateTableData() {
                 dispose();
         
     }//GEN-LAST:event_teawiseActionPerformed
->>>>>>> Stashed changes
+
 
     /**
      * @param args the command line arguments
