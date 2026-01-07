@@ -28,7 +28,8 @@ private String ID;
         this.ID=ID;
         TPES db=new TPES();
         ResultSet rs = db.adminName(ID);
-        ResultSet rs2 =db.allteachers(ID);
+        ResultSet rs2 =db.allteachers(ID);    
+
 
          
 try {
@@ -45,8 +46,8 @@ try {
    String f = rs2.getString("t_fname");
    String l = rs2.getString("t_lname");
 allteachers.addItem(new TeacherItem(f, l));
-    //TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
-     //System.out.println("Selected: " + selected.toString());
+    TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
+     System.out.println("Selected: " + selected.toString());
 
      }
      
@@ -64,6 +65,8 @@ allteachers.addItem(new TeacherItem(f, l));
         ResultSet rs = db.adminName(ID);
         sem.setSelectedIndex(semester);
         dept.setSelectedIndex(department);
+                ResultSet rs2 =db.allteachers(ID);    
+
         
          
 try {
@@ -72,6 +75,17 @@ try {
         String lname = rs.getString("a_lname");
         fullname.setText(fname + " " + lname);
     }
+    
+    allteachers.removeAllItems();
+     while(rs2.next()){  
+   String f = rs2.getString("t_fname");
+   String l = rs2.getString("t_lname");
+ allteachers.addItem(new TeacherItem(f, l));
+ 
+    TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
+     System.out.println("Selected: " + selected.toString());
+
+     }
     
 } catch(Exception e){
             System.out.println(e);
@@ -145,7 +159,7 @@ private void updateTableData() {
         students = new javax.swing.JButton();
         overall = new javax.swing.JButton();
         teachers = new javax.swing.JButton();
-        overall1 = new javax.swing.JButton();
+        teawise = new javax.swing.JButton();
         fullname = new javax.swing.JTextField();
         a_id = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -307,10 +321,11 @@ private void updateTableData() {
         teachers.setText("Show");
         teachers.addActionListener(this::teachersActionPerformed);
 
-        overall1.setBackground(new java.awt.Color(0, 0, 153));
-        overall1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        overall1.setForeground(new java.awt.Color(255, 255, 255));
-        overall1.setText("Show");
+        teawise.setBackground(new java.awt.Color(0, 0, 153));
+        teawise.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        teawise.setForeground(new java.awt.Color(255, 255, 255));
+        teawise.setText("Show");
+        teawise.addActionListener(this::teawiseActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -367,7 +382,7 @@ private void updateTableData() {
                 .addGap(74, 74, 74)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(overall, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(overall1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -406,7 +421,7 @@ private void updateTableData() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(allteachers, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(overall1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -463,12 +478,12 @@ private void updateTableData() {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(69, 69, 69))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -479,15 +494,15 @@ private void updateTableData() {
                                         .addComponent(searchbox, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(search)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(a_id, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                            .addComponent(fullname)))
+                            .addComponent(fullname))
+                        .addGap(14, 14, 14))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(258, 258, 258)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 8, Short.MAX_VALUE)))
-                .addGap(14, 14, 14))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -594,12 +609,22 @@ private void updateTableData() {
 
     }//GEN-LAST:event_searchActionPerformed
 
+<<<<<<< Updated upstream
     private void overallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overallActionPerformed
         // TODO add your handling code here:
         semWiseGraph s=new semWiseGraph(ID,FullName,semester.getSelectedIndex());
         s.setVisible(true);
         dispose();
     }//GEN-LAST:event_overallActionPerformed
+=======
+    private void teawiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teawiseActionPerformed
+        // TODO add your handling code here:
+                teawisegraph h=new teawisegraph();
+                h.setVisible(true);
+                dispose();
+        
+    }//GEN-LAST:event_teawiseActionPerformed
+>>>>>>> Stashed changes
 
     /**
      * @param args the command line arguments
@@ -631,6 +656,7 @@ private void updateTableData() {
     
     private String TFname;
     private String TLname;
+    
 
 
     public TeacherItem( String TFname, String TLname) {
@@ -672,7 +698,6 @@ private void updateTableData() {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton overall;
-    private javax.swing.JButton overall1;
     private javax.swing.JTable records;
     private javax.swing.JButton search;
     private javax.swing.JTextField searchbox;
@@ -680,5 +705,6 @@ private void updateTableData() {
     private javax.swing.JComboBox<String> semester;
     private javax.swing.JButton students;
     private javax.swing.JButton teachers;
+    private javax.swing.JButton teawise;
     // End of variables declaration//GEN-END:variables
 }

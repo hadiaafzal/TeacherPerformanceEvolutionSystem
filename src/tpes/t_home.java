@@ -16,6 +16,9 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import java.awt.Font; 
 
 /**
  *
@@ -85,7 +88,67 @@ for (int subId : subjectIds) {
         this.feedbacks=feedbacks;
        
     }
-    private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
+     
+     private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    for (int i = 0; i < subjects.size(); i++) {
+        dataset.addValue(feedbacks.get(i), "Ratings", subjects.get(i));
+    }
+
+    JFreeChart barChart = ChartFactory.createBarChart(
+        "Performance Summary", 
+        null,                  
+        "Score / 5.0",         
+        dataset,
+        PlotOrientation.VERTICAL, 
+        false, true, false
+    );
+
+    CategoryPlot plot = barChart.getCategoryPlot();
+    plot.setBackgroundPaint(Color.WHITE);
+    plot.setOutlineVisible(false);
+    plot.setRangeGridlinePaint(new Color(230, 230, 230));
+    plot.setRangeGridlineStroke(new BasicStroke(1.0f));
+
+    // --- Apply Subject Name Styling (Domain Axis) ---
+    CategoryAxis domainAxis = plot.getDomainAxis();
+    java.awt.Font subjectFont = new java.awt.Font("Cambria Math", java.awt.Font.BOLD, 12);
+    domainAxis.setTickLabelFont(subjectFont);
+    domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+    domainAxis.setMaximumCategoryLabelWidthRatio(2.0f);
+
+    // --- THIN BAR SETTINGS: Increase Category Margin ---
+    // Higher value (0.50 = 50%) creates more empty space between bars, making them thinner
+    domainAxis.setCategoryMargin(0.50); 
+
+    // --- Styling the Bars (Flat Design) ---
+    BarRenderer renderer = (BarRenderer) plot.getRenderer();
+    
+    // --- THIN BAR SETTINGS: Cap the Maximum Bar Width ---
+    // This forces the bars to stay thin (5% of chart width) even if there are few subjects
+    renderer.setMaximumBarWidth(0.05); 
+    
+    renderer.setSeriesPaint(0, new Color(41, 128, 185)); 
+    renderer.setBarPainter(new StandardBarPainter()); 
+    renderer.setShadowVisible(false);
+    renderer.setItemMargin(0.0); // Not needed for single-series, keep at 0.0
+
+    // --- Styling the General Text ---
+    barChart.getTitle().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18));
+    barChart.setBackgroundPaint(Color.WHITE);
+
+    ChartPanel chartPanel = new ChartPanel(barChart);
+    chartPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    chartPanel.setBackground(Color.WHITE);
+
+    chartContainer.removeAll();
+    chartContainer.setLayout(new BorderLayout());
+    chartContainer.add(chartPanel, BorderLayout.CENTER);
+    chartContainer.validate();
+}
+
+     
+  /*  private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
     for (int i = 0; i < subjects.size(); i++) {
         dataset.addValue(feedbacks.get(i), "Ratings", subjects.get(i));
@@ -122,7 +185,7 @@ for (int subId : subjectIds) {
     chartContainer.validate();
     chartContainer.repaint();
 }
-
+*/
      
      public class SubjectItem {
     private int subId;
@@ -314,7 +377,7 @@ for (int subId : subjectIds) {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addGap(246, 246, 246)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -322,9 +385,9 @@ for (int subId : subjectIds) {
                             .addComponent(fullname))
                         .addGap(14, 14, 14))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 832, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(25, Short.MAX_VALUE))))
+                        .addGap(113, 113, 113)
+                        .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,8 +400,8 @@ for (int subId : subjectIds) {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chartContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(46, 46, 46))
         );
 
