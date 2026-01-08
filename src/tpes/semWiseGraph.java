@@ -4,6 +4,7 @@
  */
 package tpes;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.sql.ResultSet;
@@ -12,9 +13,13 @@ import javax.swing.table.DefaultTableModel; // To manage the table's data
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
@@ -46,7 +51,7 @@ private String ID;
          a_id.setText(ID);
         TPES db=new TPES();
         //ResultSet rs = db.adminName(ID);
-        ResultSet rs2 =db.allteachers(ID);
+        ResultSet rs2 =db.allteachers();
         
          
 try {
@@ -54,15 +59,13 @@ try {
     
     
     
-     allteachers.removeAllItems();
-     while(rs2.next()){  
-   String f = rs2.getString("t_fname");
-   String l = rs2.getString("t_lname");
-allteachers.addItem(new TeacherItem(f, l));
-    //TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
-     //System.out.println("Selected: " + selected.toString());
-
-     }
+   allteachers.removeAllItems();
+while(rs2.next()){  
+    String id = rs2.getString("t_id"); // Get ID from database
+    String f = rs2.getString("t_fname");
+    String l = rs2.getString("t_lname");
+    allteachers.addItem(new TeacherItem(id, f, l));
+}
     if(semester.getSelectedIndex()!=0){ 
     ResultSet rs3 = db.semGraph(sem);
     while (rs3.next()) {
@@ -79,7 +82,7 @@ allteachers.addItem(new TeacherItem(f, l));
       LoadLineChart(department,feedbacks);
       }
     
-    /*
+    
     public semWiseGraph(String ID,int department, int semester) {
         initComponents();
         a_id.setText(ID);  
@@ -103,7 +106,7 @@ try {
       
         this.FullName=fullname.getText();
     }
-    */
+   
   private void LoadLineChart(ArrayList<String> department, ArrayList<Integer> feedbacks){
        // 1. Create Data (Using semesters for a trend look)
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -209,7 +212,7 @@ private void updateTableData() {
         students = new javax.swing.JButton();
         overall = new javax.swing.JButton();
         teachers = new javax.swing.JButton();
-        overall1 = new javax.swing.JButton();
+        teawise = new javax.swing.JButton();
         fullname = new javax.swing.JTextField();
         a_id = new javax.swing.JTextField();
         chartContainer = new javax.swing.JPanel();
@@ -364,10 +367,11 @@ private void updateTableData() {
         teachers.setText("Show");
         teachers.addActionListener(this::teachersActionPerformed);
 
-        overall1.setBackground(new java.awt.Color(0, 0, 153));
-        overall1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        overall1.setForeground(new java.awt.Color(255, 255, 255));
-        overall1.setText("Show");
+        teawise.setBackground(new java.awt.Color(0, 0, 153));
+        teawise.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        teawise.setForeground(new java.awt.Color(255, 255, 255));
+        teawise.setText("Show");
+        teawise.addActionListener(this::teawiseActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -424,7 +428,7 @@ private void updateTableData() {
                 .addGap(74, 74, 74)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(overall, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(overall1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -463,7 +467,7 @@ private void updateTableData() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(allteachers, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(overall1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -580,6 +584,53 @@ private void updateTableData() {
         dispose();
     }//GEN-LAST:event_overallActionPerformed
 
+    private void teawiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teawiseActionPerformed
+     TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
+    if (selected != null) {
+        String tid = selected.getId(); 
+        String tfname = selected.getFirstName(); 
+        String tlname = selected.getLastName();
+                tea_graph h = new tea_graph(tid, tfname, tlname); 
+        h.setVisible(true);
+        this.dispose();
+    }
+    }//GEN-LAST:event_teawiseActionPerformed
+         private void fetchDataAndGenerateGraph(String targetTeacherId) {
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    TPES db = new TPES(); 
+    
+    try {
+        // --- CORRECTED SQL QUERY ---
+        // We select average score and subject name by joining feedback and subjects tables
+        String sql = "SELECT s.sub_name, AVG(f.total_score) AS avg_score " +
+                     "FROM feedback f " +
+                     "JOIN subjects s ON f.sub_id = s.sub_id " +
+                     "WHERE f.t_id = '" + targetTeacherId + "' " +
+                     "GROUP BY s.sub_name, f.sub_id"; // Group by subject to get one average per subject
+                     
+        java.sql.Statement st = db.con.createStatement();
+        java.sql.ResultSet rs = st.executeQuery(sql);
+
+        while (rs.next()) {
+            // Read directly from the joined result set
+            String subName = rs.getString("sub_name");
+            double avgScore = rs.getDouble("avg_score");
+            
+            // Add directly to JFreeChart dataset
+            dataset.addValue(avgScore, "Ratings", subName);
+        }
+        
+        // Pass the filled dataset to your chart method
+        loadBarChartFromDataset(dataset);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        // This JOptionPane will now show the REAL error message if one occurs
+        javax.swing.JOptionPane.showMessageDialog(this, "Error loading graph: " + e.getMessage());
+    
+    }                                       
+     }
+
     /**
      * @param args the command line arguments
      */
@@ -606,24 +657,31 @@ private void updateTableData() {
     }
 
     
-    public class TeacherItem {
-    
-    private String TFname;
-    private String TLname;
+public class TeacherItem {
+    private String id;
+    private String firstName;
+    private String lastName;
 
-
-    public TeacherItem( String TFname, String TLname) {
-       
-        this.TFname = TFname;    
-        this.TLname = TLname;
-        
+    // Constructor
+    public TeacherItem(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;    
+        this.lastName = lastName;
     }
 
+    // Getters
+    public String getId() { return id; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
 
-    @Override
+    // Setters (Optional: add if you need to modify the data)
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+   
+     @Override
     public String toString() {
-        return (TFname + " " + TLname).trim();
-        
+        return firstName + " " + lastName; // This is what will show in the combo box
     }
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -649,10 +707,61 @@ private void updateTableData() {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JButton overall;
-    private javax.swing.JButton overall1;
     private javax.swing.JComboBox<String> sem;
     private javax.swing.JComboBox<String> semester;
     private javax.swing.JButton students;
     private javax.swing.JButton teachers;
+    private javax.swing.JButton teawise;
     // End of variables declaration//GEN-END:variables
+
+
+
+    private void loadBarChartFromDataset(DefaultCategoryDataset dataset) {
+    JFreeChart barChart = ChartFactory.createBarChart(
+        "Performance Summary", 
+        null,                  
+        "Score / 5.0",         
+        dataset,
+        PlotOrientation.VERTICAL, 
+        false, true, false
+    );
+
+    CategoryPlot plot = barChart.getCategoryPlot();
+    plot.setBackgroundPaint(Color.WHITE);
+    plot.setOutlineVisible(false);
+    plot.setRangeGridlinePaint(new Color(230, 230, 230));
+    plot.setRangeGridlineStroke(new BasicStroke(1.0f));
+
+  
+    CategoryAxis domainAxis = plot.getDomainAxis();
+    java.awt.Font subjectFont = new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14);
+    domainAxis.setTickLabelFont(subjectFont);
+    domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+    domainAxis.setMaximumCategoryLabelWidthRatio(2.0f);
+    domainAxis.setCategoryMargin(0.50); 
+
+    
+    BarRenderer renderer = (BarRenderer) plot.getRenderer();
+    renderer.setMaximumBarWidth(0.05);
+    renderer.setSeriesPaint(0, new Color(41, 128, 185)); 
+    renderer.setBarPainter(new StandardBarPainter()); 
+    renderer.setShadowVisible(false);
+    renderer.setItemMargin(0.0);
+
+  
+    barChart.getTitle().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18));
+    barChart.setBackgroundPaint(Color.WHITE);
+
+    
+    ChartPanel chartPanel = new ChartPanel(barChart);
+    chartPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    chartPanel.setBackground(Color.WHITE);
+
+    chartContainer.removeAll();
+    chartContainer.setLayout(new java.awt.BorderLayout());
+    chartContainer.add(chartPanel, java.awt.BorderLayout.CENTER);
+    chartContainer.validate();
+    chartContainer.repaint(); 
+}
+
 }

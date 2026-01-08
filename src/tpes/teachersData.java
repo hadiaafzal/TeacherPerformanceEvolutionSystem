@@ -34,6 +34,8 @@ private String ID;
     
     private void loadTableData(String ID) {
     TPES db = new TPES();
+            ResultSet rs2 =db.allteachers();    
+
     DefaultTableModel tb = (DefaultTableModel) record.getModel();
     tb.setRowCount(0); 
 
@@ -48,6 +50,20 @@ private String ID;
                 rs1.getString("t_pno")
             });
         }
+        
+        
+        
+         
+        
+    allteachers.removeAllItems();
+while(rs2.next()){  
+    String id = rs2.getString("t_id"); // Get ID from database
+    String f = rs2.getString("t_fname");
+    String l = rs2.getString("t_lname");
+    allteachers.addItem(new TeacherItem(id, f, l));
+}
+     
+        
     } catch (Exception e) {
         e.printStackTrace(); 
     }
@@ -70,7 +86,7 @@ private String ID;
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        teawise = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         semester = new javax.swing.JComboBox<>();
         dept = new javax.swing.JComboBox<>();
@@ -83,7 +99,7 @@ private String ID;
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        allteachers = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         overall = new javax.swing.JButton();
@@ -147,10 +163,11 @@ private String ID;
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 153));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Overall");
+        teawise.setBackground(new java.awt.Color(0, 0, 153));
+        teawise.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        teawise.setForeground(new java.awt.Color(255, 255, 255));
+        teawise.setText("Show");
+        teawise.addActionListener(this::teawiseActionPerformed);
 
         jLabel5.setBackground(new java.awt.Color(0, 153, 204));
         jLabel5.setFont(new java.awt.Font("Cambria Math", 1, 12)); // NOI18N
@@ -231,10 +248,8 @@ private String ID;
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Teacher Wise Graph");
 
-        jComboBox2.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Teacher---", "IRFAN KHANDRO", "IMTIAZ HUSSAIN", "AMEEN KHWAJA", "JATIN KUMAR", "SHAHISTA LODHI", "NOMAN  BIN ZAHID", "ADEEL HUSSAIN", "ASIF KHAN", "HAQUE NAWAZ LASHARI" }));
-        jComboBox2.addActionListener(this::jComboBox2ActionPerformed);
+        allteachers.setBackground(new java.awt.Color(204, 204, 204));
+        allteachers.addActionListener(this::allteachersActionPerformed);
 
         jButton2.setBackground(new java.awt.Color(0, 0, 153));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -270,7 +285,7 @@ private String ID;
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(allteachers, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
@@ -300,7 +315,7 @@ private String ID;
                         .addComponent(overall, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -337,9 +352,9 @@ private String ID;
                 .addGap(10, 10, 10)
                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(allteachers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(teawise)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -444,7 +459,7 @@ private String ID;
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 16, Short.MAX_VALUE))
+                .addGap(0, 20, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 980, 500));
@@ -461,9 +476,9 @@ private String ID;
         // TODO add your handling code here:
     }//GEN-LAST:event_semesterActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void allteachersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allteachersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_allteachersActionPerformed
 
     private void deptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deptActionPerformed
         // TODO add your handling code here:
@@ -531,6 +546,19 @@ private String ID;
         }
     }//GEN-LAST:event_overallActionPerformed
 
+    private void teawiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teawiseActionPerformed
+     TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
+    if (selected != null) {
+        String tid = selected.getId(); 
+        String tfname = selected.getFirstName(); 
+        String tlname = selected.getLastName();
+        tea_graph h = new tea_graph(tid, tfname, tlname); 
+        h.setVisible(true);
+        this.dispose();
+    }
+        
+    }//GEN-LAST:event_teawiseActionPerformed
+   
     /**
      * @param args the command line arguments
      */
@@ -555,15 +583,47 @@ private String ID;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new teachersData().setVisible(true));
     }
+    
+public class TeacherItem {
+    private String id;
+    private String firstName;
+    private String lastName;
+
+    // Constructor
+    public TeacherItem(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;    
+        this.lastName = lastName;
+    }
+
+    // Getters
+    public String getId() { return id; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+
+    // Setters (Optional: add if you need to modify the data)
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    // Helper method for full name
+    public String getFullName() {
+        return (firstName + " " + lastName).trim();
+    }
+   
+    @Override
+    public String toString() {
+        return getFullName(); 
+    }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField a_id;
+    private javax.swing.JComboBox<TeacherItem> allteachers;
     private javax.swing.JComboBox<String> dept;
     private javax.swing.JTextField fullname;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -589,5 +649,6 @@ private String ID;
     private javax.swing.JTextField searchbox;
     private javax.swing.JComboBox<String> sem;
     private javax.swing.JComboBox<String> semester;
+    private javax.swing.JButton teawise;
     // End of variables declaration//GEN-END:variables
 }

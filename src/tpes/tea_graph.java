@@ -5,33 +5,105 @@
 package tpes;
 
 import java.sql.ResultSet;
-import javax.swing.table.DefaultTableModel; // To manage the table's data
+import javax.swing.table.DefaultTableModel;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.sql.*;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import org.jfree.chart.*;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import java.awt.Font;
+import org.jfree.chart.axis.*;
+import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.category.*;
+import org.jfree.data.category.DefaultCategoryDataset;
+import java.awt.*;
+import java.util.ArrayList;
 
-/**
+
+        /**
  *
  * @author Dell
  */
-public class teawisegraph extends javax.swing.JFrame {
+public class tea_graph extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(teawisegraph.class.getName());
-private String ID;
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(tea_graph.class.getName());
+     private String ID;
+    private String teacherId;
+    private String TfullName;
     private String FullName;
-    /**
-     * Creates new form teawisegraph
-     */
-    public teawisegraph() {
+    
+    
+    public tea_graph(String tid, String tfname, String tlname) {
+         initComponents();
+    this.teacherId = tid;
+    this.TfullName = tfname + " " + tlname;
+    TPES db=new TPES();
+            ResultSet rs = db.adminName(ID);
+       ResultSet rs2 =db.allteachers(); 
+       
+       
+       
+       
+                
+try {
+    if (rs.next()) {
+        String fname = rs.getString("a_fname");
+        String lname = rs.getString("a_lname");
+        fullname.setText(fname + " " + lname);
+    }
+    
+    
+    
+    allteachers.removeAllItems();
+while(rs2.next()){  
+    String id = rs2.getString("t_id"); 
+    String f = rs2.getString("t_fname");
+    String l = rs2.getString("t_lname");
+      System.out.println("Adding teacher: " + f); 
+
+    allteachers.addItem(new TeacherItem(id, f, l));
+}
+        /*
+     for (int subId : subjectIds) {
+   ResultSet   rs3 = db.tGraph(ID, subId);
+    if (rs3 != null && rs3.next()) {
+        feedbacks.add(Integer.parseInt(rs3.getString("avg_score")));
+    }
+    */
+     
+} catch(Exception e){
+            System.out.println(e);
+        }
+        this.FullName=fullname.getText();
+      
+    
+        fetchDataAndGenerateGraph(tid); 
+    }
+
+
+       public tea_graph() {
         initComponents();
     }
-    public teawisegraph(String ID) {
+     
+   
+    public tea_graph(String ID) {
         initComponents();
         a_id.setText(ID);  
         this.ID=ID;
-        this.FullName=fullname.getText();
         TPES db=new TPES();
         ResultSet rs = db.adminName(ID);
-        ResultSet rs2 =db.allteachers(ID);    
-
-
+        ResultSet rs2 =db.allteachers(); 
+        
          
 try {
     if (rs.next()) {
@@ -42,22 +114,27 @@ try {
     
     
     
-     allteachers.removeAllItems();
-     while(rs2.next()){  
-   String f = rs2.getString("t_fname");
-   String l = rs2.getString("t_lname");
-allteachers.addItem(new TeacherItem(f, l));
-    TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
-     System.out.println("Selected: " + selected.toString());
+    allteachers.removeAllItems();
+while(rs2.next()){  
+    String id = rs2.getString("t_id"); 
+    String f = rs2.getString("t_fname");
+    String l = rs2.getString("t_lname");
+            System.out.println("Adding teacher: " + f); 
 
-     }
+    allteachers.addItem(new TeacherItem(id, f, l));
+}
+   
+    
      
 } catch(Exception e){
             System.out.println(e);
         }
+        this.FullName=fullname.getText();
       
     }
-    public teawisegraph(String ID,int department, int semester) {
+    
+    
+    public tea_graph(String ID,int department, int semester) {
         initComponents();
         a_id.setText(ID);  
         this.ID=ID;
@@ -65,7 +142,7 @@ allteachers.addItem(new TeacherItem(f, l));
         ResultSet rs = db.adminName(ID);
         sem.setSelectedIndex(semester);
         dept.setSelectedIndex(department);
-                ResultSet rs2 =db.allteachers(ID);    
+           ResultSet rs2 =db.allteachers();    
 
         
          
@@ -76,55 +153,30 @@ try {
         fullname.setText(fname + " " + lname);
     }
     
-    allteachers.removeAllItems();
-     while(rs2.next()){  
-   String f = rs2.getString("t_fname");
-   String l = rs2.getString("t_lname");
-allteachers.addItem(new TeacherItem(f, l));
-    TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
-     System.out.println("Selected: " + selected.toString());
+allteachers.removeAllItems();
+while(rs2.next()){  
+    
+    String id = rs2.getString("t_id"); 
+    String f = rs2.getString("t_fname");
+    String l = rs2.getString("t_lname");
+        System.out.println("Adding teacher: " + f); 
 
-     }
+    allteachers.addItem(new TeacherItem(id, f, l));
+}
+
     
 } catch(Exception e){
             System.out.println(e);
         }
       
         this.FullName=fullname.getText();
+            fetchDataAndGenerateGraph(ID); 
+
     }
   
-   /* 
-private void updateTableData() {
-    String selectedSem = sem.getSelectedItem().toString();
-    String selectedDept = dept.getSelectedItem().toString(); 
+    
+    
 
-    DefaultTableModel tb = (DefaultTableModel) records.getModel(); 
-    tb.setRowCount(0); 
-
-    ResultSet combinedRs = null; 
-
-    try {
-        TPES db = new TPES();
-        
-        combinedRs = db.getCombinedFeedback(selectedSem, selectedDept); 
-
-        while(combinedRs != null && combinedRs.next()) {
-            tb.addRow(new String[]{
-                combinedRs.getString("f_id"), combinedRs.getString("st_id"), combinedRs.getString("sub_id"),
-                combinedRs.getString("t_id"), combinedRs.getString("total_score"), combinedRs.getString("sub_name"),
-                combinedRs.getString("course_code"), combinedRs.getString("semester"), combinedRs.getString("dept_name")
-            });
-        }
-        
-    } catch (Exception e) {
-        System.out.print("Database Error: " + e);
-    } finally {
-         // 5. Close the ResultSet safely in a finally block
-         try { if (combinedRs != null) combinedRs.close(); } catch (Exception e) {}
-    }
-    tb.fireTableDataChanged(); 
-}
-*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -140,6 +192,11 @@ private void updateTableData() {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        fullname = new javax.swing.JTextField();
+        a_id = new javax.swing.JTextField();
+        chartContainer = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         semester = new javax.swing.JComboBox<>();
@@ -158,9 +215,8 @@ private void updateTableData() {
         overall = new javax.swing.JButton();
         teachers = new javax.swing.JButton();
         teawise = new javax.swing.JButton();
-        fullname = new javax.swing.JTextField();
-        a_id = new javax.swing.JTextField();
-        chartContainer = new javax.swing.JPanel();
+        t_name = new javax.swing.JTextField();
+        t_id = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -186,28 +242,51 @@ private void updateTableData() {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(251, 251, 251)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 793, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(390, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel2)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 110));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1170, 110));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setForeground(new java.awt.Color(0, 33, 71));
+
+        fullname.setEditable(false);
+        fullname.setBackground(new java.awt.Color(57, 77, 120));
+        fullname.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
+        fullname.setForeground(new java.awt.Color(255, 255, 255));
+        fullname.setBorder(null);
+        fullname.addActionListener(this::fullnameActionPerformed);
+
+        a_id.setEditable(false);
+        a_id.setBackground(new java.awt.Color(57, 77, 120));
+        a_id.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
+        a_id.setForeground(new java.awt.Color(255, 255, 255));
+        a_id.setBorder(null);
+
+        chartContainer.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Cambria Math", 1, 12)); // NOI18N
+        jLabel3.setText("TEACHER NAME:");
+
+        jLabel4.setFont(new java.awt.Font("Cambria Math", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 33, 71));
+        jLabel4.setText("TID:");
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -304,6 +383,7 @@ private void updateTableData() {
         overall.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         overall.setForeground(new java.awt.Color(255, 255, 255));
         overall.setText("Overall");
+        overall.addActionListener(this::overallActionPerformed);
 
         teachers.setBackground(new java.awt.Color(0, 0, 153));
         teachers.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -366,7 +446,7 @@ private void updateTableData() {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(73, 73, 73)
                                 .addComponent(students, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 11, Short.MAX_VALUE)))
+                        .addGap(0, 22, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
@@ -412,22 +492,14 @@ private void updateTableData() {
                 .addComponent(allteachers, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        fullname.setEditable(false);
-        fullname.setBackground(new java.awt.Color(57, 77, 120));
-        fullname.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        fullname.setForeground(new java.awt.Color(255, 255, 255));
-        fullname.setBorder(null);
-        fullname.addActionListener(this::fullnameActionPerformed);
+        t_name.setBackground(new java.awt.Color(0, 153, 204));
+        t_name.setFont(new java.awt.Font("Cambria Math", 0, 12)); // NOI18N
 
-        a_id.setBackground(new java.awt.Color(57, 77, 120));
-        a_id.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        a_id.setForeground(new java.awt.Color(255, 255, 255));
-        a_id.setBorder(null);
-
-        chartContainer.setLayout(new java.awt.BorderLayout());
+        t_id.setBackground(new java.awt.Color(0, 153, 204));
+        t_id.setFont(new java.awt.Font("Cambria Math", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -435,30 +507,47 @@ private void updateTableData() {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(a_id, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                        .addComponent(fullname))
-                    .addComponent(chartContainer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fullname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(a_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(t_name, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 163, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(a_id, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(a_id, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(t_name, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel4)
+                        .addGap(1, 1, 1)
+                        .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 1000, 490));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 1180, 520));
 
         pack();
         setLocationRelativeTo(null);
@@ -478,7 +567,7 @@ private void updateTableData() {
 
     private void deptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deptActionPerformed
         // TODO add your handling code here:
-                   // updateTableData(); 
+                    //updateTableData(); 
 
     }//GEN-LAST:event_deptActionPerformed
 
@@ -504,14 +593,72 @@ private void updateTableData() {
                 dispose();
     }//GEN-LAST:event_teachersActionPerformed
 
-    private void teawiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teawiseActionPerformed
-        // TODO add your handling code here:
-         teachersData h=new teachersData(ID, FullName);
-                h.setVisible(true);
-                dispose();
+    
+    
+    
+    
+   
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         
-    }//GEN-LAST:event_teawiseActionPerformed
+    }//GEN-LAST:event_searchActionPerformed
 
+
+    private void overallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overallActionPerformed
+        // TODO add your handling code here:
+        semWiseGraph s=new semWiseGraph(ID,FullName,semester.getSelectedIndex());
+        s.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_overallActionPerformed
+
+    private void teawiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teawiseActionPerformed
+      
+ TeacherItem selected = (TeacherItem) allteachers.getSelectedItem();
+    if (selected != null) {
+        String tid = selected.getId(); 
+        String tfname = selected.getFirstName(); 
+        String tlname = selected.getLastName();
+                tea_graph h = new tea_graph(tid, tfname, tlname); 
+        h.setVisible(true);
+        this.dispose();
+        
+
+}}
+     private void fetchDataAndGenerateGraph(String targetTeacherId) {
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    TPES db = new TPES(); 
+    
+    try {
+        // --- CORRECTED SQL QUERY ---
+        // We select average score and subject name by joining feedback and subjects tables
+        String sql = "SELECT s.sub_name, AVG(f.total_score) AS avg_score " +
+                     "FROM feedback f " +
+                     "JOIN subjects s ON f.sub_id = s.sub_id " +
+                     "WHERE f.t_id = '" + targetTeacherId + "' " +
+                     "GROUP BY s.sub_name, f.sub_id"; // Group by subject to get one average per subject
+                     
+        java.sql.Statement st = db.con.createStatement();
+        java.sql.ResultSet rs = st.executeQuery(sql);
+
+        while (rs.next()) {
+            // Read directly from the joined result set
+            String subName = rs.getString("sub_name");
+            double avgScore = rs.getDouble("avg_score");
+            
+            // Add directly to JFreeChart dataset
+            dataset.addValue(avgScore, "Ratings", subName);
+        }
+        
+        // Pass the filled dataset to your chart method
+        loadBarChartFromDataset(dataset);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        // This JOptionPane will now show the REAL error message if one occurs
+        javax.swing.JOptionPane.showMessageDialog(this, "Error loading graph: " + e.getMessage());
+    
+    }//GEN-LAST:event_teawiseActionPerformed
+     }
+    
     /**
      * @param args the command line arguments
      */
@@ -534,30 +681,38 @@ private void updateTableData() {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new teawisegraph().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new tea_graph().setVisible(true));
     }
 
-    
-    public class TeacherItem {
-    
-    private String TFname;
-    private String TLname;
+public class TeacherItem {
+    private String id;
+    private String firstName;
+    private String lastName;
 
-
-    public TeacherItem( String TFname, String TLname) {
-       
-        this.TFname = TFname;    
-        this.TLname = TLname;
-        
+    public TeacherItem(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;    
+        this.lastName = lastName;
     }
 
+    public String getId() { return id; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
 
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFullName() {
+        return (firstName + " " + lastName).trim();
+    }
+   
     @Override
     public String toString() {
-        return (TFname + " " + TLname).trim();
-        
+        return getFullName(); 
     }
 }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField a_id;
     private javax.swing.JComboBox<TeacherItem> allteachers;
@@ -570,6 +725,8 @@ private void updateTableData() {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -584,7 +741,79 @@ private void updateTableData() {
     private javax.swing.JComboBox<String> sem;
     private javax.swing.JComboBox<String> semester;
     private javax.swing.JButton students;
+    private javax.swing.JTextField t_id;
+    private javax.swing.JTextField t_name;
     private javax.swing.JButton teachers;
     private javax.swing.JButton teawise;
     // End of variables declaration//GEN-END:variables
-}
+
+
+
+private void loadBarChartFromDataset(DefaultCategoryDataset dataset) {
+    // 1. Chart Creation
+    JFreeChart barChart = ChartFactory.createBarChart(
+        "Performance Summary", 
+        null,                   
+        "Score / 5.0",          
+        dataset,
+        PlotOrientation.VERTICAL, 
+        false, true, false
+    );
+
+    // --- 2. Overall Chart Styling (Teal Background) ---
+    barChart.setBackgroundPaint(new Color(0, 188, 188)); 
+    barChart.getTitle().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18));
+    barChart.getTitle().setPaint(Color.BLACK); // Set to black for visibility
+
+    // --- 3. Plot Area Styling (Lavender Background) ---
+    CategoryPlot plot = barChart.getCategoryPlot();
+    plot.setBackgroundPaint(new Color(204, 204, 255)); 
+    plot.setOutlineVisible(false);
+    plot.setRangeGridlinePaint(Color.WHITE);
+    plot.setRangeGridlineStroke(new BasicStroke(1.0f));
+
+    // --- 4. Domain Axis (X-Axis) Styling & Tilt ---
+    CategoryAxis domainAxis = plot.getDomainAxis();
+    domainAxis.setTickLabelFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 11));
+    domainAxis.setTickLabelPaint(new Color(0, 102, 102));
+    
+    // TILT: Apply 45-degree angle
+    domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+    domainAxis.setCategoryMargin(0.20); // Adjust space between bars
+
+    // FIX FOR CUT-OFF TEXT: Explicitly reserve space at the bottom
+    AxisSpace space = new AxisSpace();
+    space.setBottom(180); // Increased significantly to fit long tilted names
+    plot.setFixedDomainAxisSpace(space);
+
+    // --- 5. Range Axis (Y-Axis) Styling & Underline ---
+    NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+    rangeAxis.setTickLabelPaint(new Color(0, 102, 102));
+    
+    // HTML UNDERLINE
+    rangeAxis.setLabel("<html><u>Score / 5.0</u></html>");
+    rangeAxis.setLabelFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14));
+    rangeAxis.setLabelPaint(new Color(0, 102, 102));
+    
+    // Set fixed range so bars don't hit the top
+    rangeAxis.setRange(0, 70); 
+
+    // --- 6. Bar Renderer Styling ---
+    BarRenderer renderer = (BarRenderer) plot.getRenderer();
+    renderer.setSeriesPaint(0, new Color(41, 128, 185)); 
+    renderer.setBarPainter(new StandardBarPainter()); 
+    renderer.setShadowVisible(false);
+    renderer.setMaximumBarWidth(0.10); 
+
+    // --- 7. Chart Panel & Container ---
+    ChartPanel chartPanel = new ChartPanel(barChart);
+    chartPanel.setBackground(new Color(0, 188, 188));
+    chartPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    chartContainer.removeAll();
+    chartContainer.setLayout(new BorderLayout());
+    chartContainer.add(chartPanel, BorderLayout.CENTER);
+    
+    chartContainer.revalidate();
+    chartContainer.repaint();
+}}

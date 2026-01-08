@@ -10,6 +10,15 @@ import java.sql.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import org.jfree.chart.*;
+import org.jfree.chart.axis.*;
+import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.category.*;
+import org.jfree.data.category.DefaultCategoryDataset;
+import java.awt.*;
+import org.jfree.chart.axis.AxisSpace;
+import org.jfree.chart.axis.AxisLocation;
+
+
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -19,6 +28,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import java.awt.Font; 
+import org.jfree.ui.RectangleEdge;
 
 /**
  *
@@ -67,15 +77,16 @@ try {
         
      int id = rs2.getInt("sub_id");
    String name = rs2.getString("sub_name");
-  
+    subjects.addItem(new SubjectItem(id, name));
    subjectName.add(rs2.getString("sub_name"));
    subjectIds.add(Integer.parseInt(rs2.getString("sub_id")));
    
     
- subjects.addItem(new SubjectItem(id, name));
+// subjects.addItem(new SubjectItem(id, name));
 }
-for (int subId : subjectIds) {
-    ResultSet rs3 = db.tGraph(ID, subId);
+         
+     for (int subId : subjectIds) {
+   ResultSet   rs3 = db.tGraph(ID, subId);
     if (rs3 != null && rs3.next()) {
         feedbacks.add(Integer.parseInt(rs3.getString("avg_score")));
     }
@@ -89,103 +100,73 @@ for (int subId : subjectIds) {
        
     }
      
-     private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
+private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
+    // 1. Data Population with Notification Suppression for Efficiency
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    for (int i = 0; i < subjects.size(); i++) {
+    dataset.setNotify(false); // Prevents redundant chart updates during loop
+    int limit = Math.min(subjects.size(), feedbacks.size());
+    for (int i = 0; i < limit; i++) {
         dataset.addValue(feedbacks.get(i), "Ratings", subjects.get(i));
     }
+    dataset.setNotify(true); // Triggers a single redraw after data is ready
 
+    // 2. Chart Creation
     JFreeChart barChart = ChartFactory.createBarChart(
-        "Performance Summary", 
-        null,                  
-        "Score / 5.0",         
-        dataset,
-        PlotOrientation.VERTICAL, 
-        false, true, false
+        "Performance Summary", null, "Score / 5.0", dataset, 
+        PlotOrientation.VERTICAL, false, true, false
     );
 
+    // --- 3. Overall Chart Styling ---
+    barChart.setBackgroundPaint(new Color(0, 188, 188)); // Teal background
+    barChart.getTitle().setFont(new Font("SansSerif", Font.BOLD, 18));
+    barChart.getTitle().setPaint(Color.WHITE);
+
+    // --- 4. Plot Area Styling ---
     CategoryPlot plot = barChart.getCategoryPlot();
-    plot.setBackgroundPaint(Color.WHITE);
+    plot.setBackgroundPaint(new Color(204, 204, 255)); // Lavender inner area
     plot.setOutlineVisible(false);
-    plot.setRangeGridlinePaint(new Color(230, 230, 230));
+    plot.setRangeGridlinePaint(Color.WHITE);
     plot.setRangeGridlineStroke(new BasicStroke(1.0f));
 
-    // --- Apply Subject Name Styling (Domain Axis) ---
+    // --- 5. Domain Axis (X-Axis) Styling ---
     CategoryAxis domainAxis = plot.getDomainAxis();
-    java.awt.Font subjectFont = new java.awt.Font("Cambria Math", java.awt.Font.BOLD, 12);
-    domainAxis.setTickLabelFont(subjectFont);
-    domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-    domainAxis.setMaximumCategoryLabelWidthRatio(2.0f);
+    domainAxis.setTickLabelFont(new Font("SansSerif", Font.BOLD, 14));
+    domainAxis.setTickLabelPaint(new Color(0, 102, 102));
+    domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45); //
+    domainAxis.setCategoryMargin(0.35); // Gap between categories
 
-    // --- THIN BAR SETTINGS: Increase Category Margin ---
-    // Higher value (0.50 = 50%) creates more empty space between bars, making them thinner
-    domainAxis.setCategoryMargin(0.50); 
+    // Automatic space calculation (replaces fixed setBottom for responsiveness)
+    plot.setFixedDomainAxisSpace(null); 
 
-    // --- Styling the Bars (Flat Design) ---
+    // --- 6. Range Axis (Y-Axis) Styling & Underlining ---
+    NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+    rangeAxis.setTickLabelPaint(new Color(0, 102, 102));
+    
+    // Formatting the label with HTML for a true underline
+    //rangeAxis.setLabel("<html><u>Score / 5.0</u></html>");
+    //rangeAxis.setLabelFont(new Font("SansSerif", Font.BOLD, 12));
+    //rangeAxis.setLabelPaint(new Color(0, 102, 102));
+
+    // --- 7. Bar Renderer Styling ---
     BarRenderer renderer = (BarRenderer) plot.getRenderer();
-    
-    // --- THIN BAR SETTINGS: Cap the Maximum Bar Width ---
-    // This forces the bars to stay thin (5% of chart width) even if there are few subjects
-    renderer.setMaximumBarWidth(0.05); 
-    
-    renderer.setSeriesPaint(0, new Color(41, 128, 185)); 
-    renderer.setBarPainter(new StandardBarPainter()); 
+    renderer.setSeriesPaint(0, new Color(41, 128, 185)); // Professional blue
+    renderer.setBarPainter(new StandardBarPainter()); // Removes glossy gradient
     renderer.setShadowVisible(false);
-    renderer.setItemMargin(0.0); // Not needed for single-series, keep at 0.0
+    renderer.setMaximumBarWidth(0.1); // Ensures bars don't get too thick
 
-    // --- Styling the General Text ---
-    barChart.getTitle().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18));
-    barChart.setBackgroundPaint(Color.WHITE);
-
+    // --- 8. Panel Integration & Transparency ---
     ChartPanel chartPanel = new ChartPanel(barChart);
+    chartPanel.setOpaque(false); // Allows the chart background to be visible
     chartPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-    chartPanel.setBackground(Color.WHITE);
 
+    // UI Thread Safety for 2026 environments
     chartContainer.removeAll();
     chartContainer.setLayout(new BorderLayout());
     chartContainer.add(chartPanel, BorderLayout.CENTER);
-    chartContainer.validate();
-}
-
-     
-  /*  private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
-    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-    for (int i = 0; i < subjects.size(); i++) {
-        dataset.addValue(feedbacks.get(i), "Ratings", subjects.get(i));
-    }
-    // 2. Create the Bar Chart
-    JFreeChart barChart = ChartFactory.createBarChart(
-        "Teacher Performance Summary",
-        "Performance Category",
-        "Ratings",
-        dataset,
-        PlotOrientation.VERTICAL,
-        false,
-        true,
-        false
-    );
-
-    // 3. Modern Styling
-    CategoryPlot plot = barChart.getCategoryPlot();
-    plot.setBackgroundPaint(Color.WHITE);
-    plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
-
-    BarRenderer renderer = (BarRenderer) plot.getRenderer();
-    renderer.setSeriesPaint(0, new Color(52, 152, 219));
-    renderer.setBarPainter(new StandardBarPainter());
-    renderer.setShadowVisible(false);
-
-    // 4. Display in JPanel
-    ChartPanel chartPanel = new ChartPanel(barChart);
-    chartPanel.setMouseWheelEnabled(true);
-
-    chartContainer.removeAll();
-    chartContainer.setLayout(new BorderLayout());
-    chartContainer.add(chartPanel, BorderLayout.CENTER);
-    chartContainer.validate();
+    chartContainer.revalidate();
     chartContainer.repaint();
 }
-*/
+  
      
      public class SubjectItem {
     private int subId;
@@ -219,7 +200,6 @@ for (int subId : subjectIds) {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -277,9 +257,6 @@ for (int subId : subjectIds) {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel3.setText("Teacher Performance");
-
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -292,7 +269,7 @@ for (int subId : subjectIds) {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 155, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,9 +293,6 @@ for (int subId : subjectIds) {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 23, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,7 +302,7 @@ for (int subId : subjectIds) {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(23, 23, 23)
                                 .addComponent(show, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 34, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(subjects, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -337,6 +311,7 @@ for (int subId : subjectIds) {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,19 +350,13 @@ for (int subId : subjectIds) {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addGap(246, 246, 246)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(t_id, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                            .addComponent(fullname))
-                        .addGap(14, 14, 14))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(t_id, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                    .addComponent(fullname))
+                .addGap(14, 14, 14))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,14 +364,13 @@ for (int subId : subjectIds) {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chartContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(chartContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(46, 46, 46))
+                        .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 1090, 500));
@@ -454,7 +422,6 @@ for (int subId : subjectIds) {
     private javax.swing.JTextField fullname;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

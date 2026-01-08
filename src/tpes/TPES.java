@@ -118,8 +118,18 @@ public ResultSet adminName(String id){
     }
     return rs;
 }
+/*
+public ResultSet teaName(String id){
 
-
+    String sql="select *from teachers where a_id='"+id+"'";
+    try{
+    rs=st.executeQuery(sql);
+    }catch(Exception e){
+    System.out.print(e);
+    }
+    return rs;
+}
+*/
 
 /*
  
@@ -172,8 +182,8 @@ public ResultSet stdData(String ID){
         return rs;
     }
 
-public ResultSet allteachers(String ID) {
-    String sql = "SELECT  t_fname, t_lname from teachers";
+public ResultSet allteachers() {
+    String sql = "SELECT t_id, t_fname, t_lname from teachers";
                 
       try {
         Statement localSt = con.createStatement(); 
@@ -278,7 +288,7 @@ public ResultSet teachers(String id){
         return stLocal.executeQuery(sql);
     } catch (Exception e) {
         e.printStackTrace();
-        return null;
+        return null; 
     }
 }
 
@@ -353,6 +363,7 @@ where t_id='tid-001' and sub_id=61
      */
     public static void main(String[] args) {
         // TODO code application logic here
+
         TPES d=new TPES(); // to show the connection
     }
     
