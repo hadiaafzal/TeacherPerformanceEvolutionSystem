@@ -55,7 +55,7 @@ public class t_home extends javax.swing.JFrame {
         this.FullName=fullname.getText();
         TPES db=new TPES();
         ResultSet rs = db.teacherName(ID);
-        ResultSet rs2 =db.teachers(ID);
+        ResultSet rs2 =db.teacherSubject(ID);
         ArrayList<String> subjectName = new ArrayList<>();
         ArrayList<Integer> subjectIds = new ArrayList<>();
         ArrayList<Integer> feedbacks=new ArrayList<>();

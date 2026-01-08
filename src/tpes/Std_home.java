@@ -200,6 +200,11 @@ setOpaque(true);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/TPESlogo.png"))); // NOI18N
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Male User.png"))); // NOI18N
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel7MousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -346,6 +351,11 @@ setOpaque(true);
         l.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jLabel7MousePressed
 
     /**
      * @param args the command line arguments

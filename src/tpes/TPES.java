@@ -274,7 +274,7 @@ public ResultSet subjects(int sem, String dept, String id){
 
 
 
-public ResultSet teachers(String id){
+public ResultSet teacherSubject(String id){
  
  String sql = "SELECT  s.sub_name, s.sub_id, s.semester " +
                  "FROM teachers t " +

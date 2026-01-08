@@ -137,7 +137,7 @@ private void addFocusEffect(JTextField field) {
         });
 
         st_dept.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        st_dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Department", "Computer Science", "Cyber Security", "Software Engineering", "Information Technology", "Artificial Intelligence", "Data Science", " " }));
+        st_dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Department", "CS", "AI", "SE", "IT", "DS", "CY", " " }));
         st_dept.setToolTipText("");
         st_dept.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
