@@ -56,6 +56,8 @@ private String ID;
          
         
     allteachers.removeAllItems();
+       allteachers.addItem(new TeacherItem("", "Select a teacher", ""));
+
 while(rs2.next()){  
     String id = rs2.getString("t_id"); // Get ID from database
     String f = rs2.getString("t_fname");
@@ -179,7 +181,7 @@ while(rs2.next()){
         semester.addActionListener(this::semesterActionPerformed);
 
         dept.setBackground(new java.awt.Color(204, 204, 204));
-        dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select sem---", "CS", "AI", "DS", "SE", "AI", "IT" }));
+        dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select dept---", "CS", "AI", "DS", "SE", "SE", "IT" }));
         dept.addActionListener(this::deptActionPerformed);
 
         jLabel8.setFont(new java.awt.Font("Cambria Math", 1, 12)); // NOI18N

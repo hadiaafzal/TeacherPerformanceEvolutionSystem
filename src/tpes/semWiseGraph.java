@@ -60,6 +60,8 @@ try {
     
     
    allteachers.removeAllItems();
+      allteachers.addItem(new TeacherItem("", "Select a teacher", ""));
+
 while(rs2.next()){  
     String id = rs2.getString("t_id"); // Get ID from database
     String f = rs2.getString("t_fname");
@@ -276,7 +278,7 @@ private void updateTableData() {
         semester.addActionListener(this::semesterActionPerformed);
 
         dept.setBackground(new java.awt.Color(204, 204, 204));
-        dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select sem---", "CS", "AI", "DS", "SE", "AI", "IT" }));
+        dept.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select dept---", "CS", "AI", "DS", "SE", "SE", "IT" }));
         dept.addActionListener(this::deptActionPerformed);
 
         jLabel8.setFont(new java.awt.Font("Cambria Math", 1, 12)); // NOI18N
@@ -491,7 +493,7 @@ private void updateTableData() {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
