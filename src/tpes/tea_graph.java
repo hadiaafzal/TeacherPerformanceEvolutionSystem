@@ -42,9 +42,17 @@ public class tea_graph extends javax.swing.JFrame {
     private String TfullName;
     private String FullName;
     
+    public tea_graph(){
+        initComponents();
+    }
     
-    public tea_graph(String tid, String tfname, String tlname) {
+    public tea_graph(String ID, String aname,String tid, String tfname, String tlname) {
          initComponents();
+         a_id.setText(ID);
+         fullname.setText(aname);
+         t_name.setText(tfname +" "+tlname);
+         t_id.setText(tid);
+         this.ID=ID;
     this.teacherId = tid;
     this.TfullName = tfname + " " + tlname;
     TPES db=new TPES();
@@ -65,6 +73,8 @@ try {
     
     
     allteachers.removeAllItems();
+       allteachers.addItem(new TeacherItem("", "Select a teacher", ""));
+
 while(rs2.next()){  
     String id = rs2.getString("t_id"); 
     String f = rs2.getString("t_fname");
@@ -73,13 +83,6 @@ while(rs2.next()){
 
     allteachers.addItem(new TeacherItem(id, f, l));
 }
-        /*
-     for (int subId : subjectIds) {
-   ResultSet   rs3 = db.tGraph(ID, subId);
-    if (rs3 != null && rs3.next()) {
-        feedbacks.add(Integer.parseInt(rs3.getString("avg_score")));
-    }
-    */
      
 } catch(Exception e){
             System.out.println(e);
@@ -91,9 +94,7 @@ while(rs2.next()){
     }
 
 
-       public tea_graph() {
-        initComponents();
-    }
+       
      
    
     public tea_graph(String ID) {
@@ -115,6 +116,7 @@ try {
     
     
     allteachers.removeAllItems();
+    
 while(rs2.next()){  
     String id = rs2.getString("t_id"); 
     String f = rs2.getString("t_fname");
@@ -154,6 +156,8 @@ try {
     }
     
 allteachers.removeAllItems();
+       allteachers.addItem(new TeacherItem("", "Select a teacher", ""));
+
 while(rs2.next()){  
     
     String id = rs2.getString("t_id"); 
@@ -415,45 +419,39 @@ while(rs2.next()){
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(semester, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(45, 45, 45))))
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(57, 57, 57)
-                                .addComponent(sem, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(57, 57, 57)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(57, 57, 57)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dept, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(75, 75, 75)
-                                .addComponent(teachers, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addComponent(students, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 22, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(overall, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(overall, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(teawise, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(sem, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dept, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addComponent(teachers, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(students, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -495,11 +493,13 @@ while(rs2.next()){
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
+        t_name.setEditable(false);
         t_name.setBackground(new java.awt.Color(0, 153, 204));
-        t_name.setFont(new java.awt.Font("Cambria Math", 0, 12)); // NOI18N
+        t_name.setFont(new java.awt.Font("Cambria Math", 1, 13)); // NOI18N
 
+        t_id.setEditable(false);
         t_id.setBackground(new java.awt.Color(0, 153, 204));
-        t_id.setFont(new java.awt.Font("Cambria Math", 0, 12)); // NOI18N
+        t_id.setFont(new java.awt.Font("Cambria Math", 1, 13)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -507,12 +507,12 @@ while(rs2.next()){
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(t_name, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t_name, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(t_id))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chartContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -559,17 +559,34 @@ while(rs2.next()){
 
     private void allteachersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allteachersActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_allteachersActionPerformed
 
     private void deptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deptActionPerformed
         // TODO add your handling code here:
-                    //updateTableData(); 
+                    //updateTableData();
+                    if(dept.getSelectedIndex()!=0 && sem.getSelectedIndex()!=0){
+        int deptIndex=dept.getSelectedIndex();
+        int semIndex=sem.getSelectedIndex();
+        
+        A_home a=new A_home(ID,deptIndex, semIndex);
+        a.setVisible(true);
+        dispose();
+            }
 
     }//GEN-LAST:event_deptActionPerformed
 
     private void semActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semActionPerformed
         // TODO add your handling code here:
            // updateTableData(); 
+           if(dept.getSelectedIndex()!=0 && sem.getSelectedIndex()!=0){
+        int deptIndex=dept.getSelectedIndex();
+        int semIndex=sem.getSelectedIndex();
+        
+        A_home a=new A_home(ID,deptIndex, semIndex);
+        a.setVisible(true);
+        dispose();
+            }
              
     }//GEN-LAST:event_semActionPerformed
 
@@ -613,7 +630,7 @@ while(rs2.next()){
         String tid = selected.getId(); 
         String tfname = selected.getFirstName(); 
         String tlname = selected.getLastName();
-                tea_graph h = new tea_graph(tid, tfname, tlname); 
+                tea_graph h = new tea_graph(ID, FullName,tid, tfname, tlname); 
         h.setVisible(true);
         this.dispose();
         
