@@ -353,7 +353,31 @@ public ResultSet semGraph(int sem){
         return null;
     }
 }
-
+public ResultSet pieGraph(String t_id,int start, int end){
+ 
+ String sql = "select * from feedback where total_score between "+start+" and "+end+" and t_id='"+t_id+"'";
+      
+    try {
+        Statement stLocal = con.createStatement();
+        return stLocal.executeQuery(sql);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+public ResultSet joindate(String t_id){
+ 
+ String sql = "select joiningdate from teachers where t_id='"+t_id+"'";
+      
+    try {
+        Statement stLocal = con.createStatement();
+        return stLocal.executeQuery(sql);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+//select * from feedback where total_score between 80 and 100 and t_id='tid-001';
 /*
 select AVG(total_score) from feedback 
 where t_id='tid-001' and sub_id=61

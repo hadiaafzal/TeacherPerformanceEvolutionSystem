@@ -30,6 +30,17 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import java.awt.Font; 
 import org.jfree.ui.RectangleEdge;
 
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+
 /**
  *
  * @author Dell
@@ -60,6 +71,7 @@ public class t_home extends javax.swing.JFrame {
         ArrayList<Integer> subjectIds = new ArrayList<>();
         ArrayList<Integer> feedbacks=new ArrayList<>();
        
+       int noOfCourses=0;
     
      
      
@@ -67,9 +79,10 @@ try {
     if (rs.next()) {
         String fname = rs.getString("t_fname");
         String lname = rs.getString("t_lname");
+        String jDate = rs.getString("joiningdate");
 
         fullname.setText(fname + " " + lname);
- 
+        joinDate.setText(jDate);
     }
 
    subjects.removeAllItems();
@@ -80,6 +93,7 @@ try {
     subjects.addItem(new SubjectItem(id, name));
    subjectName.add(rs2.getString("sub_name"));
    subjectIds.add(Integer.parseInt(rs2.getString("sub_id")));
+   noOfCourses+=1;
    
     
 // subjects.addItem(new SubjectItem(id, name));
@@ -90,14 +104,48 @@ try {
     if (rs3 != null && rs3.next()) {
         feedbacks.add(Integer.parseInt(rs3.getString("avg_score")));
     }
-}
+     }
+    int poor = 0, bad = 0, average = 0, good = 0, excellent = 0;
+    ResultSet rs4 = db.pieGraph(ID, 0, 100);
+    
+    if (rs4 != null) {
+        while (rs4.next()) {
+            // Get the score from the "total_score" column
+            int score = rs4.getInt("total_score");
 
+            // Logic for your specific ranges
+            if (score < 50) {
+                poor++;
+            } else if (score >= 50 && score < 57) {
+                bad++;
+            } else if (score >= 57 && score < 65) {
+                average++;
+            } else if (score >= 65 && score < 75) {
+                good++;
+            } else if (score >= 75 && score <= 100) {
+                excellent++;
+            }
+        } 
+    }
+        System.out.println(excellent);
+        loadFeedbackGraph(excellent, good, average, bad, poor);
 } catch(Exception e){
             System.out.println(e);
         }      
         this.subjectName=subjectName;
         this.feedbacks=feedbacks;
+        int percentage=0;
+        int Total=0;
+        for(int total : feedbacks){
+            Total+=total;
+        }
+        percentage=Total/feedbacks.size();
+        String Percentage=String.valueOf(percentage);
+        String courseString=String.valueOf(noOfCourses);
+        per.setText(Percentage);
+        course.setText(courseString);
        
+        
     }
      
 private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbacks) {
@@ -167,7 +215,81 @@ private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbac
     chartContainer.repaint();
 }
   
-     
+
+/*
+private void loadFeedbackGraph() {
+    // 1. Create dataset and chart (same code as above)
+    DefaultPieDataset dataset = new DefaultPieDataset();
+    dataset.setValue("Excellent", 45);
+    dataset.setValue("Good", 35);
+    dataset.setValue("Average", 15);
+    dataset.setValue("Poor", 5);
+
+    JFreeChart chart = ChartFactory.createPieChart(
+            "Student Feedback Rating", dataset, true, true, false
+    );
+    
+    // (Add the styling code from the previous step here if you want colors)
+    PiePlot plot = (PiePlot) chart.getPlot();
+    plot.setSectionPaint("Excellent", new Color(0, 192, 157));
+    plot.setSectionPaint("Good", new Color(255, 111, 97));
+    plot.setSectionPaint("Average", new Color(225, 173, 1));
+    plot.setSectionPaint("Poor", new Color(211, 47, 47));
+    plot.setBackgroundPaint(Color.WHITE);
+
+    // 2. Add to your existing panel
+    ChartPanel chartPanel = new ChartPanel(chart);
+
+// --- ADD THIS LINE ---
+chartPanel.setPreferredSize(new java.awt.Dimension(200, 200)); 
+// ---------------------
+
+studentPieChart.removeAll();          
+studentPieChart.setLayout(new java.awt.BorderLayout()); // Ensure BorderLayout is used
+studentPieChart.add(chartPanel, java.awt.BorderLayout.CENTER);
+studentPieChart.validate();  // Use validate() instead of revalidate() for dynamic swing updates
+studentPieChart.repaint();
+}
+*/
+
+private void loadFeedbackGraph(int excellent, int good, int average, int bad, int poor) {
+    DefaultPieDataset dataset = new DefaultPieDataset();
+    dataset.setValue("Excellent", excellent);
+    dataset.setValue("Good", good);
+    dataset.setValue("Average", average);
+    dataset.setValue("Bad",bad);
+    dataset.setValue("Poor", poor);
+
+    JFreeChart chart = ChartFactory.createPieChart(
+            "Student Feedback Rating", dataset, true, true, false
+    );
+    
+    PiePlot plot = (PiePlot) chart.getPlot();
+    
+    // 1. ADD PERCENTAGES TO LABELS
+    plot.setLabelGenerator(new org.jfree.chart.labels.StandardPieSectionLabelGenerator("{0} ({2})"));
+    
+    // 2. STYLING
+    plot.setSectionPaint("Excellent", new Color(0, 192, 157));
+    plot.setSectionPaint("Good", new Color(255, 111, 97));
+    plot.setSectionPaint("Average", new Color(225, 173, 1));
+    plot.setSectionPaint("Poor", new Color(211, 47, 47));
+    plot.setBackgroundPaint(Color.WHITE);
+    plot.setOutlineVisible(false);
+
+    // 3. ADD TO PANEL & FIX SIZE
+    ChartPanel chartPanel = new ChartPanel(chart);
+    
+    // Crucial sizing fix: prevents the chart from pushing the window boundaries
+    chartPanel.setPreferredSize(new java.awt.Dimension(studentPieChart.getWidth(), studentPieChart.getHeight()));
+    
+    studentPieChart.removeAll();          
+    studentPieChart.setLayout(new BorderLayout());
+    studentPieChart.add(chartPanel, BorderLayout.CENTER);
+    studentPieChart.validate();           
+    studentPieChart.repaint();
+}
+
      public class SubjectItem {
     private int subId;
     private String subName;
@@ -206,9 +328,25 @@ private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbac
         show = new javax.swing.JButton();
         subjects = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        fullname = new javax.swing.JTextField();
-        t_id = new javax.swing.JTextField();
         chartContainer = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        fullname = new javax.swing.JLabel();
+        t_id = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        course = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        joinDate = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        per = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        studentPieChart = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -292,57 +430,109 @@ private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbac
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(subjects, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(show, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 34, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(subjects, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(6, 6, 6)
+                                .addComponent(show, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 28, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(show, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subjects, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(168, Short.MAX_VALUE))
+                .addContainerGap(276, Short.MAX_VALUE))
         );
 
-        fullname.setEditable(false);
-        fullname.setBackground(new java.awt.Color(57, 77, 120));
-        fullname.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        fullname.setForeground(new java.awt.Color(255, 255, 255));
-        fullname.setBorder(null);
-        fullname.addActionListener(this::fullnameActionPerformed);
-
-        t_id.setBackground(new java.awt.Color(57, 77, 120));
-        t_id.setFont(new java.awt.Font("Arial Unicode MS", 3, 14)); // NOI18N
-        t_id.setForeground(new java.awt.Color(255, 255, 255));
-        t_id.setBorder(null);
-        t_id.addActionListener(this::t_idActionPerformed);
-
         chartContainer.setLayout(new java.awt.BorderLayout());
+
+        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        fullname.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        fullname.setText("Ameen Khwaja");
+        jPanel5.add(fullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 140, 30));
+
+        t_id.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        t_id.setText("TID-001");
+        jPanel5.add(t_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 82, 30));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Teacher:");
+        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 68, -1));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Person.png"))); // NOI18N
+        jPanel5.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, 40, 40));
+
+        jPanel7.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        course.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        course.setText("8");
+        jPanel7.add(course, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 35, 40, -1));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel10.setText("No of Courses:");
+        jPanel7.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, -1));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/course.png"))); // NOI18N
+        jPanel7.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 60, 50));
+
+        jPanel8.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        joinDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        joinDate.setText("12-01-2016");
+        jPanel8.add(joinDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 35, 110, -1));
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel12.setText("Joinded Date:");
+        jPanel8.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, -1));
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Calendar.png"))); // NOI18N
+        jPanel8.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 60, 50));
+
+        jPanel9.setBackground(new java.awt.Color(255, 204, 255));
+        jPanel9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        per.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        per.setText("68.96");
+        jPanel9.add(per, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 35, 60, -1));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel14.setText("Performance %");
+        jPanel9.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, -1));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logos/Increase.png"))); // NOI18N
+        jPanel9.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 50, 50));
+
+        studentPieChart.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -350,27 +540,38 @@ private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbac
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-                .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(t_id, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                    .addComponent(fullname))
-                .addGap(14, 14, 14))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(studentPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chartContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(fullname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(t_id, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chartContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                    .addComponent(studentPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 1090, 500));
@@ -378,14 +579,6 @@ private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbac
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void fullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullnameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fullnameActionPerformed
-
-    private void t_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_idActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_t_idActionPerformed
 
     private void showActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showActionPerformed
         // TODO add your handling code here:
@@ -419,19 +612,35 @@ private void loadBarChart(ArrayList<String> subjects, ArrayList<Integer> feedbac
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel chartContainer;
-    private javax.swing.JTextField fullname;
+    private javax.swing.JLabel course;
+    private javax.swing.JLabel fullname;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel joinDate;
+    private javax.swing.JLabel per;
     private javax.swing.JButton show;
+    private javax.swing.JPanel studentPieChart;
     private javax.swing.JComboBox<SubjectItem> subjects;
-    private javax.swing.JTextField t_id;
+    private javax.swing.JLabel t_id;
     // End of variables declaration//GEN-END:variables
 }
