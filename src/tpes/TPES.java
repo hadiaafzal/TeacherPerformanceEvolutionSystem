@@ -376,10 +376,7 @@ public ResultSet joindate(String t_id){
     }
 }
 //select * from feedback where total_score between 80 and 100 and t_id='tid-001';
-/*
-select AVG(total_score) from feedback 
-where t_id='tid-001' and sub_id=61
-*/
+
     /**
      * @param args the command line arguments
      */

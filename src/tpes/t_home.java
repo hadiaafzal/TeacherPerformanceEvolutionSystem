@@ -493,7 +493,7 @@ private void loadFeedbackGraph(int excellent, int good, int average, int bad, in
 
         course.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         course.setText("8");
-        jPanel7.add(course, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 35, 40, -1));
+        jPanel7.add(course, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 40, -1));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel10.setText("No of Courses:");
